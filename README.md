@@ -2,6 +2,8 @@
 
 GRUnit is a test framework for iOS which runs as a Test (app) target in your project.
 
+![GRUnit-1.0.1](https://raw.github.com/gabriel/GRUnit/master/GRUnit-1.0.1.ping)
+
 ## Install
 
 ### Install the GRUnit gem
@@ -41,24 +43,6 @@ Note: If you don't have a Tests target in your project, you will get an error: "
 You should use the `.xcworkspace` file to work on your project:
 ```xml
 $ open ProjectName.xcworkspace
-```
-
-### Install Command Line
-
-```xml
-$ grunit install_cli -n ProjectName
-```
-
-Install ios-sim using homebrew:
-
-```xml
-$ brew install ios-sim
-```
-
-Now you can run tests from the command line:
-
-```xml
-$ grunit run -n ProjectName
 ```
 
 ### Add a test
@@ -143,6 +127,20 @@ GRAssertNoThrowSpecific(expr, specificException)
 GRAssertNoThrowSpecificNamed(expr, specificException, aName)
 ```
 
-## iOS
+### Install Command Line
 
-![GRUnit-IPhone-0.5.8](https://raw.github.com/gh-unit/gh-unit/master/Documentation/images/ios.png)
+```xml
+$ grunit install_cli -n ProjectName
+```
+
+Install ios-sim using homebrew:
+
+```xml
+$ brew install ios-sim
+```
+
+Now you can run tests from the command line:
+
+```xml
+$ grunit run -n ProjectName
+```
