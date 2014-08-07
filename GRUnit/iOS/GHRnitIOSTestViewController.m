@@ -84,13 +84,7 @@
   if (log) [text appendFormat:@"\nLog:\n%@\n", log];
   NSString *stackTrace = [_testNode stackTrace];
   if (stackTrace) [text appendFormat:@"\n%@\n", stackTrace];
-  if ([_testNode.test.exception.name isEqualToString:@"GHViewUnavailableException"]) {
-    NSDictionary *exceptionUserInfo = _testNode.test.exception.userInfo;
-    UIImage *renderedImage = exceptionUserInfo[@"RenderedImage"];
-    [_testView setSavedImage:nil renderedImage:renderedImage text:text];
-  } else {
-    [_testView setText:text];
-  }
+  [_testView setText:text];
   return text;
 }
 

@@ -33,8 +33,6 @@
 
 @interface GRUnitIOSTestView : UIScrollView
 
-- (void)setSavedImage:(UIImage *)savedImage renderedImage:(UIImage *)renderedImage text:(NSString *)text;
-
 - (void)setText:(NSString *)text;
 
 @end

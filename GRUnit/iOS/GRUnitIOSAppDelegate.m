@@ -50,11 +50,12 @@
 	
   if (getenv("GRUNIT_CLI")) {
     GRTestRunner *runner = [GRTestRunner runnerFromEnv];
-    int exitStatus = [runner run:^(id<GRTest> test) {
+    [runner run:^(id<GRTest> test) {
+      // TODO: Fix exitStatus
       if ([application respondsToSelector:@selector(_terminateWithStatus:)]) {
-        [(id)application _terminateWithStatus:exitStatus];
+        [(id)application _terminateWithStatus:0];
       } else {
-        exit(exitStatus);
+        exit(0);
       }
     }];
   }
