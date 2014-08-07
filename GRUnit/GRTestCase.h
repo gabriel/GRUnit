@@ -67,7 +67,7 @@
  */
 #define GHUWeakSelf GHUWeakObject(self)
 
-#define GHUErrorHandler(self) (^(NSError *error) { GHUWeakFail(self, @"Error: %@", error); })
+#define GRUErrorHandler(self) (^(NSError *error) { GRWeakFail(self, @"Error: %@", error); })
 
 /*!
  The base class for a test case. 
@@ -83,12 +83,6 @@
      // Run after each test method
      - (void)tearDown { }
 
-     // Run before the tests are run for this class
-     - (void)setUpClass { }
-
-     // Run before the tests are run for this class
-     - (void)tearDownClass { }
-     
      // Tests are prefixed by 'test' and contain no arguments and no return value
      - (void)testA { 
        GRTestLog(@"Log with a test with the GRTestLog(...) for test specific logging.");
@@ -96,10 +90,7 @@
 
      // Another test; Tests are run in lexical order
      - (void)testB { }
-     
-     // Override any exceptions; By default exceptions are raised, causing a test failure
-     - (void)failWithException:(NSException *)exception { }
-     
+          
      @end
 
  */
