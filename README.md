@@ -2,7 +2,7 @@
 
 GRUnit is a test framework for iOS which runs as a Test (app) target in your project.
 
-![GRUnit-1.0.1](https://raw.github.com/gabriel/GRUnit/master/GRUnit-1.0.1.ping)
+![GRUnit-1.0.1](https://raw.githubusercontent.com/gabriel/GRUnit/master/GRUnit-1.0.1.png)
 
 ## Install
 
