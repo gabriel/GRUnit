@@ -8,13 +8,15 @@ GRUnit is a test framework for iOS which runs as a Test (app) target in your pro
 
 ### Install the GRUnit gem
 
+This gem makes it easy to setup a test app target.
+
 ```xml
 $ gem install grunit
 ```
 
 ### Install the Tests target
 
-This will edit your ProjectName.xcodeproj file and create a Tests target, scheme, and a sample test file.
+This will edit your ProjectName.xcodeproj file and create a Tests target, scheme, and a sample test file. Its ok to run this multiple times, it won't duplicate any files, targets or schemes.
 
 ```xml
 $ grunit install -n ProjectName
@@ -22,7 +24,7 @@ $ grunit install -n ProjectName
 
 ### Add the Tests target to your Podfile
 
-Create a new file named `Podfile` in the directory that contains the your `.xcodeproj` file, or edit it if it already exists.
+Setup your Podfile to include GRUnit for the Tests target you just created. 
 
 ```ruby
 # Podfile
@@ -34,6 +36,7 @@ end
 ```
 
 Install your project's pods. CocoaPods will then download and configure the required libraries for your project:
+
 ```xml
 $ pod install
 ```
@@ -41,6 +44,7 @@ $ pod install
 Note: If you don't have a Tests target in your project, you will get an error: "[!] Unable to find a target named Tests". If you named your test target something different, such as "ProjectTests" then the Podfile target line should look like: `target :ProjectTests do` instead.
 
 You should use the `.xcworkspace` file to work on your project:
+
 ```xml
 $ open ProjectName.xcworkspace
 ```
