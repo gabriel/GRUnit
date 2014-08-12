@@ -83,7 +83,7 @@ BOOL isTestFixtureOfClass(Class aClass, Class testCaseClass);
  @param target Target
  @result Array of id<GRTest>
  */
-- (NSArray *)loadTestsFromTarget:(id)target;
+- (NSArray *)loadTestsFromTarget:(id)target delegate:(id<GRTestDelegate>)delegate;
 
 /*!
  See if class is of a registered test case class.

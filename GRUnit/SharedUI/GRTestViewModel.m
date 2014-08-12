@@ -68,7 +68,7 @@
 }
 
 - (NSString *)statusString:(NSString *)prefix {
-	NSInteger totalRunCount = [_suite stats].testCount - ([_suite disabledCount] + [_suite stats].cancelCount);
+	NSInteger totalRunCount = _suite.stats.succeedCount + _suite.stats.failureCount;
 	NSString *statusInterval = [NSString stringWithFormat:@"%@ %0.3fs (%0.3fs in test time)", (self.isRunning ? @"Running" : @"Took"), _runner.interval, [_suite interval]];
 	return [NSString stringWithFormat:@"%@%@ %@/%@ (%@ failures)", prefix, statusInterval,
 					@([_suite stats].succeedCount), @(totalRunCount), @([_suite stats].failureCount)];
@@ -140,9 +140,11 @@
 - (void)_updateTestNodeWithDefaults:(GRTestNode *)node {
   id<GRTest> test = node.test;
   id<GRTest> testDefault = _defaults[test.identifier];
-  if (testDefault) {    
-    test.status = testDefault.status;
-    test.interval = testDefault.interval;
+  if (testDefault) {
+    if (testDefault.status == GRTestStatusErrored) {
+      test.status = testDefault.status;
+      test.interval = testDefault.interval;
+    }
     #if !TARGET_OS_IPHONE // Don't use hidden state for iPhone
     if ([test isKindOfClass:[GRTest class]]) 
       [test setHidden:testDefault.hidden];

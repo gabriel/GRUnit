@@ -64,14 +64,13 @@ extern BOOL GRTestStatusEnded(GRTestStatus status);
 typedef struct {
   NSInteger succeedCount; // Number of succeeded tests
   NSInteger failureCount; // Number of failed tests
-  NSInteger cancelCount; // Number of aborted tests
   NSInteger testCount; // Total number of tests 
 } GRTestStats;
 
 /*!
  Create GRTestStats.
  */
-extern GRTestStats GRTestStatsMake(NSInteger succeedCount, NSInteger failureCount, NSInteger cancelCount, NSInteger testCount);
+extern GRTestStats GRTestStatsMake(NSInteger succeedCount, NSInteger failureCount, NSInteger testCount);
 
 extern const GRTestStats GRTestStatsEmpty;
 
@@ -241,20 +240,13 @@ typedef void (^GRTestCompletionBlock)(id<GRTest> test);
  @param identifier Unique identifier
  @param name Name
  */
-- (id)initWithIdentifier:(NSString *)identifier name:(NSString *)name;
+- (id)initWithIdentifier:(NSString *)identifier name:(NSString *)name delegate:(id<GRTestDelegate>)delegate;
 
 /*!
  Create test with target/selector.
  @param target Target (usually a test case)
  @param selector Selector (usually a test method)
  */
-- (id)initWithTarget:(id)target selector:(SEL)selector;
-
-/*!
- Create autoreleased test with target/selector.
- @param target Target (usually a test case)
- @param selector Selector (usually a test method)
- */
-+ (id)testWithTarget:(id)target selector:(SEL)selector;
+- (id)initWithTarget:(id)target selector:(SEL)selector delegate:(id<GRTestDelegate>)delegate;
 
 @end

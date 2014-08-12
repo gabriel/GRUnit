@@ -46,8 +46,6 @@ NSString *const GRUnitFilterKey = @"Filter";
 - (id)init {
   if ((self = [super init])) {
     self.title = @"Tests";
-    if ([self respondsToSelector:@selector(edgesForExtendedLayout)])
-      self.edgesForExtendedLayout = UIRectEdgeNone;
   }
   return self;
 }
@@ -232,12 +230,8 @@ NSString *const GRUnitFilterKey = @"Filter";
   }
 }
 
-- (void)testRunner:(GRTestRunner *)runner didLog:(NSString *)message {
-  [self setStatusText:message];
-}
-
 - (void)testRunner:(GRTestRunner *)runner test:(id<GRTest>)test didLog:(NSString *)message {
-  
+  [self setStatusText:message];
 }
 
 - (void)testRunner:(GRTestRunner *)runner didStartTest:(id<GRTest>)test {

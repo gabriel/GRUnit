@@ -31,7 +31,7 @@
 #import <QuartzCore/QuartzCore.h>
 
 @interface GRUnitIOSTestView ()
-@property UILabel *textLabel;
+@property UITextView *textView;
 @end
 
 @implementation GRUnitIOSTestView
@@ -39,37 +39,27 @@
 - (id)initWithFrame:(CGRect)frame {
   if ((self = [super initWithFrame:frame])) {
     self.backgroundColor = [UIColor whiteColor];
-
-    _textLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 300, 100)];
-    _textLabel.font = [UIFont systemFontOfSize:12];
-    _textLabel.textColor = [UIColor blackColor];
-    _textLabel.numberOfLines = 0;
-    [self addSubview:_textLabel];
-
+    
+    _textView = [[UITextView alloc] init];
+    _textView.editable = NO;
+    _textView.font = [UIFont systemFontOfSize:13];
+    _textView.textColor = [UIColor blackColor];
+    [self addSubview:_textView];
   }
   return self;
 }
 
-/*
- Real layout is not in layoutSubviews since scrollviews call layoutSubviews on every frame
- */
-- (void)_layout {
-  CGFloat y = 10;
-
-  CGRect textLabelFrame = _textLabel.frame;
-  textLabelFrame.size.height = [_textLabel.text sizeWithFont:_textLabel.font constrainedToSize:CGSizeMake(_textLabel.frame.size.width, 10000) lineBreakMode:UILineBreakModeWordWrap].height;
-  _textLabel.frame = textLabelFrame;
-
-  CGRect textViewFrame = _textLabel.frame;
-  textViewFrame.origin.y = y;
-  _textLabel.frame = textViewFrame;
-  
-  self.contentSize = CGSizeMake(self.frame.size.width, textViewFrame.origin.y + textViewFrame.size.height + 10);
+- (void)layoutSubviews {
+  [super layoutSubviews];
+   CGSize size = [_textView sizeThatFits:CGSizeMake(self.frame.size.width - 8, self.frame.size.height - 8)];
+  _textView.frame = CGRectMake(8, 8, self.frame.size.width - 8, self.frame.size.height - 8);
+  _textView.contentSize = size;
 }
 
 - (void)setText:(NSString *)text {
-  _textLabel.text = text;
-  [self _layout];
+  _textView.text = text;
+  [self setNeedsLayout];
+  [self setNeedsDisplay];
 }
 
 @end

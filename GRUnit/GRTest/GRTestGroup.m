@@ -60,7 +60,7 @@
 - (id)initWithTestCase:(id)testCase selector:(SEL)selector delegate:(id<GRTestDelegate>)delegate {
   if ((self = [self initWithName:NSStringFromClass([testCase class]) delegate:delegate])) {
     _testCase = testCase;
-    [self addTest:[GRTest testWithTarget:testCase selector:selector]];
+    [self addTest:[[GRTest alloc] initWithTarget:testCase selector:selector delegate:self]];
   }
   return self;
 }
@@ -69,18 +69,13 @@
   return [[GRTestGroup alloc] initWithTestCase:testCase delegate:delegate];
 }
 
-- (void)dealloc {
-  for(id<GRTest> test in _children)
-    [test setDelegate:nil];
-}
-
 - (NSString *)description {
   return [NSString stringWithFormat:@"%@, %d %0.3f %@/%@ (%@ failures)", 
                  _name, (int)_status, _interval, @(_stats.succeedCount), @(_stats.testCount), @(_stats.failureCount)];
 }
 
 - (void)_addTestsFromTestCase:(id)testCase {
-  NSArray *tests = [[GRTesting sharedInstance] loadTestsFromTarget:testCase];
+  NSArray *tests = [[GRTesting sharedInstance] loadTestsFromTarget:testCase delegate:self];
   [self addTests:tests];
 }
 
@@ -100,18 +95,13 @@
 }
 
 - (void)addTest:(id<GRTest>)test {
-  [test setDelegate:self];  
+  test.delegate = self;
   _stats.testCount += [test stats].testCount;
   [_children addObject:test]; 
 }
 
 - (NSString *)identifier {
   return _name;
-}
-
-// Forward up
-- (void)test:(id<GRTest>)test didLog:(NSString *)message source:(id<GRTest>)source {
-  [_delegate test:self didLog:message source:source]; 
 }
 
 - (NSArray *)log {
@@ -129,9 +119,8 @@
 
 - (void)_reset {
   _status = GRTestStatusNone;
-  _stats = GRTestStatsMake(0, 0, 0, _stats.testCount);
+  _stats = GRTestStatsMake(0, 0, _stats.testCount);
   _interval = 0;
-  _exception = nil; 
 }
 
 - (void)_failedTests:(NSMutableArray *)tests testGroup:(id<GRTestGroup>)testGroup {  
@@ -148,52 +137,45 @@
   return tests;
 }
 
-- (void)setException:(NSException *)exception {
-  _exception = exception;
-  _status = GRTestStatusErrored;
-  [_delegate testDidUpdate:self source:self];
-}
-
 - (void)cancel {
-  if (_status == GRTestStatusRunning) {
-    _status = GRTestStatusCancelling;
-  } else {
-    for(id<GRTest> test in _children) {
-      _stats.cancelCount++;
-      [test cancel];
-    }
-    _status = GRTestStatusCancelled;
+  _status = GRTestStatusCancelling;
+  for (id<GRTest> test in _children) {
+    [test cancel];
   }
   [_delegate testDidUpdate:self source:self];
 }
 
 - (void)setDisabled:(BOOL)disabled {
-  for(id<GRTest> test in _children)
+  for (id<GRTest> test in _children) {
     [test setDisabled:disabled];
+  }
   [_delegate testDidUpdate:self source:self];
 }
 
 - (BOOL)isDisabled {
-  for(id<GRTest> test in _children)
+  for (id<GRTest> test in _children) {
     if (![test isDisabled]) return NO;
+  }
   return YES;
 }
 
 - (void)setHidden:(BOOL)hidden {
-  for(id<GRTest> test in _children)
+  for(id<GRTest> test in _children) {
     [test setHidden:hidden];
+  }
   [_delegate testDidUpdate:self source:self];
 }
 
 - (BOOL)isHidden {
-  for(id<GRTest> test in _children)
+  for (id<GRTest> test in _children) {
     if (![test isHidden]) return NO;
+  }
   return YES;
 }
 
 - (NSInteger)disabledCount {
   NSInteger disabledCount = 0;
-  for(id<GRTest> test in _children) {
+  for (id<GRTest> test in _children) {
     disabledCount += [test disabledCount];
   }
   return disabledCount;
@@ -202,7 +184,7 @@
 - (void)_testDidEnd:(GRTestCompletionBlock)groupCompletion {
   if (_status == GRTestStatusCancelling) {
     _status = GRTestStatusCancelled;
-  } else if (_exception || _stats.failureCount > 0) {
+  } else if (_stats.failureCount > 0) {
     _status = GRTestStatusErrored;
   } else {
     _status = GRTestStatusSucceeded;
@@ -212,32 +194,18 @@
 }
 
 - (void)_nextTest:(NSInteger)index groupCompletion:(GRTestCompletionBlock)groupCompletion {
-  if (index >= [_children count]) {
+  if (index >= [_children count] || _status == GRTestStatusCancelling) {
     [self _testDidEnd:groupCompletion];
     return;
   }
   
   id<GRTest> test = _children[index];
+  GRTestGroup *blockSelf __weak = self;
   GRTestCompletionBlock testCompletion = ^(id<GRTest> test) {
-    [self _nextTest:index+1 groupCompletion:groupCompletion];
+    [blockSelf _nextTest:index+1 groupCompletion:groupCompletion];
   };
   
-  // If we are cancelling mark all child tests cancelled (and update stats)
-  // If we errored (above), then set the error on the test (and update stats)
-  // Otherwise run it
-  if (_status == GRTestStatusCancelling) {
-    _stats.cancelCount++;
-    [test cancel];
-  } else if (_status == GRTestStatusErrored) {
-    _stats.failureCount++;
-    [test setException:_exception];
-  } else {
-    if (_status != GRTestStatusErrored) {
-      [test run:testCompletion];
-    } else {
-      [self _testDidEnd:groupCompletion];
-    }
-  }
+  [test run:testCompletion];  
 }
 
 - (void)_run:(GRTestCompletionBlock)groupCompletion {
@@ -245,7 +213,6 @@
 //  if (_status == GRTestStatusCancelled || enabledCount <= 0) {
 //    return;
 //  }
-  
   _status = GRTestStatusRunning;
   [_delegate testDidStart:self source:self];
   
@@ -290,10 +257,14 @@
       _interval += [test interval]; 
     _stats.failureCount += [test stats].failureCount;
     _stats.succeedCount += [test stats].succeedCount;
-    _stats.cancelCount += [test stats].cancelCount;   
   }
   [_delegate testDidEnd:self source:source];
   [_delegate testDidUpdate:self source:self]; 
+}
+
+// Bubble up
+- (void)test:(id<GRTest>)test didLog:(NSString *)message source:(id<GRTest>)source {
+  [_delegate test:self didLog:message source:source];
 }
 
 #pragma mark NSCoding

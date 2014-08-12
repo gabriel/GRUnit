@@ -90,6 +90,27 @@ $ grunit sync -n ProjectName
 @end
 ```
 
+To have all your tests in a test case run on the main thread, implement `shouldRunOnMainThread`.
+
+```objc
+@implementation MyTest
+
+- (void)testSomethingOnMainThread {
+  GRAssertTrue([NSThread isMainThread]);
+}
+
+- (BOOL)shouldRunOnMainThread {
+  return YES;
+}
+@end
+```
+
+## Exception Breakpoint
+
+You should setup an exception breakpoint. If set, it will stop and breakpoint when an error occurs in a test.
+
+https://developer.apple.com/library/ios/recipes/xcode_help-breakpoint_navigator/articles/adding_an_exception_breakpoint.html
+
 ## Test Macros
 
 ```
@@ -126,6 +147,10 @@ GRAssertNoThrow(expr)
 GRAssertNoThrowSpecific(expr, specificException)
 GRAssertNoThrowSpecificNamed(expr, specificException, aName)
 ```
+
+### Example Project
+
+Open `GRUnit.xcworkspace` and you will see this project uses a GRUnit Tests app target for testing.
 
 ### Install Command Line
 

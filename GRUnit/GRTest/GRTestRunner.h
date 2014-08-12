@@ -99,13 +99,6 @@
 - (void)testRunnerDidEnd:(GRTestRunner *)runner;
 
 /*!
- Test run did log message.
- @param runner Runner
- @param didLog Message
- */
-- (void)testRunner:(GRTestRunner *)runner didLog:(NSString *)didLog;
-
-/*!
  Test run test did log message.
  @param runner Runner
  @param test Test
