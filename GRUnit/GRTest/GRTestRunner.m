@@ -152,18 +152,6 @@
   dispatch_async(dispatch_get_main_queue(), block);
 }
 
-- (void)_log:(NSString *)message {
-  fputs([message UTF8String], stderr);
-  fputs("\n", stderr);
-  fflush(stderr);
-  
-  GHUWeakSelf blockSelf = self;
-  [self dispatch:^{
-    if ([blockSelf.delegate respondsToSelector:@selector(testRunner:didLog:)])
-      [blockSelf.delegate testRunner:self didLog:message];
-  }];
-}
-
 #pragma mark Delegates (GRTest)
 
 - (void)testDidStart:(id<GRTest>)test source:(id<GRTest>)source {
@@ -214,7 +202,7 @@
 }
 
 - (void)test:(id<GRTest>)test didLog:(NSString *)message source:(id<GRTest>)source {
-  [self _log:[NSString stringWithFormat:@"%@: %@", source, message]];
+  NSLog(@"%@: %@", source, message);
   GHUWeakSelf blockSelf = self;
   [self dispatch:^{
     if ([blockSelf.delegate respondsToSelector:@selector(testRunner:test:didLog:)])

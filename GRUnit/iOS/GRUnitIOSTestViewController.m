@@ -40,8 +40,7 @@
 
 - (id)init {
   if ((self = [super init])) {
-    UIBarButtonItem *runButton = [[UIBarButtonItem alloc] initWithTitle:@"Re-run" style:UIBarButtonItemStyleDone
-                                                 target:self action:@selector(_runTest)];
+    UIBarButtonItem *runButton = [[UIBarButtonItem alloc] initWithTitle:@"Re-run" style:UIBarButtonItemStyleDone target:self action:@selector(_runTest)];
     self.navigationItem.rightBarButtonItem = runButton;
   }
   return self;

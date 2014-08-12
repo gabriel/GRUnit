@@ -135,13 +135,16 @@ static GRTesting *gSharedInstance;
   NSString *lineDescription = (lineNumber ? [lineNumber description] : @"Unknown");
   NSString *filename = [[[exception userInfo][GRTestFilenameKey] stringByStandardizingPath] stringByAbbreviatingWithTildeInPath];
   NSString *filenameDescription = (filename ? filename : @"Unknown");
+  NSArray *stack = [exception callStackSymbols];
   
-  return [NSString stringWithFormat:@"\n\tName: %@\n\tFile: %@\n\tLine: %@\n\tReason: %@\n\n%@", 
-          [exception name],
-          filenameDescription, 
-          lineDescription, 
-          [exception reason], 
-          [exception callStackSymbols]];
+  NSMutableArray *lines = [NSMutableArray array];
+  [lines addObject:[NSString stringWithFormat:@"\tName: %@", [exception name]]];
+  [lines addObject:[NSString stringWithFormat:@"\tFile: %@", filenameDescription]];
+  [lines addObject:[NSString stringWithFormat:@"\tLine: %@", lineDescription]];
+  [lines addObject:[NSString stringWithFormat:@"\tReason: %@", [exception reason]]];
+  if (stack) [lines addObject:[NSString stringWithFormat:@"\n%@", stack]];
+  
+  return [lines componentsJoinedByString:@"\n"];
 }  
 
 + (NSString *)exceptionFilenameForTest:(id<GRTest>)test {
@@ -226,7 +229,7 @@ static GRTesting *gSharedInstance;
   return tests;
 }
 */
-- (NSArray *)loadTestsFromTarget:(id)target {
+- (NSArray *)loadTestsFromTarget:(id)target delegate:(id<GRTestDelegate>)delegate {
   NSMutableArray *invocations = nil;
   // Need to walk all the way up the parent classes collecting methods (in case
   // a test is a subclass of another test).
@@ -285,7 +288,7 @@ static GRTesting *gSharedInstance;
   
   NSMutableArray *tests = [[NSMutableArray alloc] initWithCapacity:[invocations count]];
   for (NSInvocation *invocation in invocations) {
-    GRTest *test = [GRTest testWithTarget:target selector:invocation.selector];
+    GRTest *test = [[GRTest alloc] initWithTarget:target selector:invocation.selector delegate:delegate];
     [tests addObject:test];
   }
   return tests;

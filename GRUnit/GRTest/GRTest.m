@@ -47,19 +47,18 @@ NSString *NSStringFromGRTestStatus(GRTestStatus status) {
   }
 }
 
-GRTestStats GRTestStatsMake(NSInteger succeedCount, NSInteger failureCount, NSInteger cancelCount, NSInteger testCount) {
+GRTestStats GRTestStatsMake(NSInteger succeedCount, NSInteger failureCount, NSInteger testCount) {
   GRTestStats stats;
   stats.succeedCount = succeedCount;
-  stats.failureCount = failureCount; 
-  stats.cancelCount = cancelCount;  
+  stats.failureCount = failureCount;
   stats.testCount = testCount;
   return stats;
 }
 
-const GRTestStats GRTestStatsEmpty = {0, 0, 0, 0};
+const GRTestStats GRTestStatsEmpty = {0, 0, 0};
 
 NSString *NSStringFromGRTestStats(GRTestStats stats) {
-  return [NSString stringWithFormat:@"%@/%@/%@/%@", @(stats.succeedCount), @(stats.failureCount), @(stats.cancelCount), @(stats.testCount)];
+  return [NSString stringWithFormat:@"%@/%@/%@", @(stats.succeedCount), @(stats.failureCount), @(stats.testCount)];
 }
 
 BOOL GRTestStatusIsRunning(GRTestStatus status) {
@@ -80,27 +79,24 @@ BOOL GRTestStatusEnded(GRTestStatus status) {
 
 @implementation GRTest
 
-- (id)initWithIdentifier:(NSString *)identifier name:(NSString *)name {
+- (id)initWithIdentifier:(NSString *)identifier name:(NSString *)name delegate:(id<GRTestDelegate>)delegate {
   if ((self = [self init])) {
     _identifier = identifier;
     _name = name;
     _interval = -1;
+    _delegate = delegate;
   }
   return self;
 }
 
-- (id)initWithTarget:(id)target selector:(SEL)selector {
+- (id)initWithTarget:(id)target selector:(SEL)selector delegate:(id<GRTestDelegate>)delegate {
   NSString *name = NSStringFromSelector(selector);
   NSString *identifier = [NSString stringWithFormat:@"%@/%@", NSStringFromClass([target class]), name];
-  if ((self = [self initWithIdentifier:identifier name:name])) {
+  if ((self = [self initWithIdentifier:identifier name:name delegate:delegate])) {
     _target = target;
     _selector = selector;
   }
   return self;  
-}
-
-+ (id)testWithTarget:(id)target selector:(SEL)selector {
-  return [[self alloc] initWithTarget:target selector:selector];
 }
 
 
@@ -116,11 +112,11 @@ BOOL GRTestStatusEnded(GRTestStatus status) {
 
 - (GRTestStats)stats {
   switch(_status) {
-    case GRTestStatusSucceeded: return GRTestStatsMake(1, 0, 0, 1);
-    case GRTestStatusErrored: return GRTestStatsMake(0, 1, 0, 1);
-    case GRTestStatusCancelled: return GRTestStatsMake(0, 0, 1, 1);
+    case GRTestStatusSucceeded: return GRTestStatsMake(1, 0, 1);
+    case GRTestStatusErrored: return GRTestStatsMake(0, 1, 1);
+    case GRTestStatusCancelled: return GRTestStatsMake(0, 0, 1);
     default:
-      return GRTestStatsMake(0, 0, 0, 1);
+      return GRTestStatsMake(0, 0, 1);
   }
 }
 
@@ -257,7 +253,7 @@ BOOL GRTestStatusEnded(GRTestStatus status) {
 }
 
 - (id)initWithCoder:(NSCoder *)coder {
-  GRTest *test = [self initWithIdentifier:[coder decodeObjectForKey:@"identifier"] name:nil];
+  GRTest *test = [self initWithIdentifier:[coder decodeObjectForKey:@"identifier"] name:nil delegate:nil];
   test.hidden = [coder decodeBoolForKey:@"hidden"];
   test.status = [coder decodeIntegerForKey:@"status"];
   test.interval = [coder decodeDoubleForKey:@"interval"];
@@ -268,7 +264,7 @@ BOOL GRTestStatusEnded(GRTestStatus status) {
 
 - (id)copyWithZone:(NSZone *)zone {
   if (!_target) [NSException raise:NSObjectNotAvailableException format:@"NSCopying unsupported for tests without target/selector pair"];
-  return [[GRTest allocWithZone:zone] initWithTarget:_target selector:_selector];
+  return [[GRTest allocWithZone:zone] initWithTarget:_target selector:_selector delegate:_delegate];
 }
 
 @end

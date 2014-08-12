@@ -31,7 +31,7 @@
 
 @class GRUnitIOSTestView;
 
-@interface GRUnitIOSTestView : UIScrollView
+@interface GRUnitIOSTestView : UIView
 
 - (void)setText:(NSString *)text;
 

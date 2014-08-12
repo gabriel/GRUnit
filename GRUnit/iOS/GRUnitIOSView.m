@@ -42,11 +42,11 @@
 
 - (id)initWithFrame:(CGRect)frame {
   if ((self = [super initWithFrame:frame])) {
+    
     _searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
     _searchBar.showsCancelButton = NO;
     [self addSubview:_searchBar];
     
-    // Table view
     _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 320, 420) style:UITableViewStylePlain];
     _tableView.sectionIndexMinimumDisplayRowCount = 5;
     [self addSubview:_tableView];
@@ -54,7 +54,6 @@
     _footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 36)];
     _footerView.backgroundColor = [UIColor colorWithWhite:0.9f alpha:1.0f];
     
-    // Status label
     _statusLabel = [[UILabel alloc] initWithFrame:CGRectMake(5, 0, 310, 36)];
     _statusLabel.text = @"Select 'Run' to start tests";
     _statusLabel.backgroundColor = [UIColor clearColor];
@@ -67,7 +66,6 @@
     _runToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 320, 36)];
     _filterControl = [[UISegmentedControl alloc] initWithItems:@[@"All", @"Failed"]];
     _filterControl.frame = CGRectMake(20, 6, 280, 24);
-    _filterControl.segmentedControlStyle = UISegmentedControlStyleBar;
     [_runToolbar addSubview:_filterControl];
     [self addSubview:_runToolbar];
   }
@@ -77,8 +75,8 @@
 - (void)layoutSubviews {
   [super layoutSubviews];
   CGSize size = self.frame.size;
-  CGFloat y = 0;  
-  CGFloat contentHeight = size.height - 44 - 36 - 36;
+  CGFloat y = 64;
+  CGFloat contentHeight = size.height - 44 - 36 - 36 - y;
   
   _searchBar.frame = CGRectMake(0, y, size.width, 44);
   y += 44;
