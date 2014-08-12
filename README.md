@@ -110,12 +110,13 @@ To have all your tests in a test case run on the main thread, implement `shouldR
 - (BOOL)shouldRunOnMainThread {
   return YES;
 }
+
 @end
 ```
 
 ## Exception Breakpoint
 
-You should setup an exception breakpoint. If set, it will stop and breakpoint when an error occurs in a test.
+You can set an exception breakpoint. If set, it will stop and breakpoint when an error first occurs.
 
 https://developer.apple.com/library/ios/recipes/xcode_help-breakpoint_navigator/articles/adding_an_exception_breakpoint.html
 
@@ -158,7 +159,7 @@ GRAssertNoThrowSpecificNamed(expr, specificException, aName)
 
 ### Example Project
 
-Open `GRUnit.xcworkspace` and you will see this project uses a GRUnit Tests app target for testing.
+This project uses GRUnit. Open `GRUnit.xcworkspace` and run the Tests target.
 
 ### Install Command Line
 
