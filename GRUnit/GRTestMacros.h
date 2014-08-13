@@ -260,9 +260,6 @@ if ( (strcmp(@encode(__typeof__(a1value)), @encode(id)) == 0) && \
 (strcmp(@encode(__typeof__(a2value)), @encode(id)) == 0) && \
 ![(id)a1value isEqual:(id)a2value] ) continue; \
 NSString *_expression = [NSString stringWithFormat:@"%s('%@') != %s('%@')", #a1, [a1 description], #a2, [a2 description]]; \
-if (desc) { \
-_expression = [NSString stringWithFormat:@"%@: %@", _expression, nil]; \
-} \
 [self failWithException:[NSException ghu_failureInFile:[NSString stringWithUTF8String:__FILE__] \
 atLine:__LINE__ \
 withDescription:_expression]]; \
@@ -802,20 +799,20 @@ do { \
 continue; \
 }\
 @catch (id anException) {\
-NSString *_descrip = GRComposeString(@"(Expected exception: %@) %@", NSStringFromClass([specificException class]), description);\
+NSString *_descrip = GRComposeString(@"(Expected exception: %@)", NSStringFromClass([specificException class]));\
 [self failWithException:[NSException ghu_failureInRaise: [NSString stringWithUTF8String:#expr] \
 exception: anException \
 inFile: [NSString stringWithUTF8String:__FILE__] \
 atLine: __LINE__ \
-withDescription: GRComposeString(_descrip, ##__VA_ARGS__)]]; \
+withDescription: GRComposeString(_descrip)]]; \
 continue; \
 }\
-NSString *_descrip = GRComposeString(@"(Expected exception: %@) %@", NSStringFromClass([specificException class]), description);\
+NSString *_descrip = GRComposeString(@"(Expected exception: %@)", NSStringFromClass([specificException class]));\
 [self failWithException:[NSException ghu_failureInRaise: [NSString stringWithUTF8String:#expr] \
 exception: nil \
 inFile: [NSString stringWithUTF8String:__FILE__] \
 atLine: __LINE__ \
-withDescription: GRComposeString(_descrip, ##__VA_ARGS__)]]; \
+withDescription: GRComposeString(_descrip)]]; \
 } while (0)
 
 
@@ -835,32 +832,32 @@ do { \
 } \
 @catch (specificException *anException) { \
 if ([aName isEqualToString: [anException name]]) continue; \
-NSString *_descrip = GRComposeString(@"(Expected exception: %@ (name: %@)) %@", NSStringFromClass([specificException class]), aName, description);\
+NSString *_descrip = GRComposeString(@"(Expected exception: %@ (name: %@))", NSStringFromClass([specificException class]), aName);\
 [self failWithException: \
 [NSException ghu_failureInRaise: [NSString stringWithUTF8String:#expr] \
 exception: anException \
 inFile: [NSString stringWithUTF8String:__FILE__] \
 atLine: __LINE__ \
-withDescription: GRComposeString(_descrip, ##__VA_ARGS__)]]; \
+withDescription: GRComposeString(_descrip)]]; \
 continue; \
 }\
 @catch (id anException) {\
-NSString *_descrip = GRComposeString(@"(Expected exception: %@) %@", NSStringFromClass([specificException class]), description);\
+NSString *_descrip = GRComposeString(@"(Expected exception: %@)", NSStringFromClass([specificException class]));\
 [self failWithException: \
 [NSException ghu_failureInRaise: [NSString stringWithUTF8String:#expr] \
 exception: anException \
 inFile: [NSString stringWithUTF8String:__FILE__] \
 atLine: __LINE__ \
-withDescription: GRComposeString(_descrip, ##__VA_ARGS__)]]; \
+withDescription: GRComposeString(_descrip)]]; \
 continue; \
 }\
-NSString *_descrip = GRComposeString(@"(Expected exception: %@) %@", NSStringFromClass([specificException class]), description);\
+NSString *_descrip = GRComposeString(@"(Expected exception: %@)", NSStringFromClass([specificException class]));\
 [self failWithException: \
 [NSException ghu_failureInRaise: [NSString stringWithUTF8String:#expr] \
 exception: nil \
 inFile: [NSString stringWithUTF8String:__FILE__] \
 atLine: __LINE__ \
-withDescription: GRComposeString(_descrip, ##__VA_ARGS__)]]; \
+withDescription: GRComposeString(_descrip)]]; \
 } while (0)
 
 

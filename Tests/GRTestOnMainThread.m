@@ -1,5 +1,5 @@
 //
-//  GHTestOnMainThread.m
+//  GRTestOnMainThread.m
 //  GRnit
 //
 //  Created by Gabriel Handford on 7/18/09.
@@ -8,12 +8,12 @@
 
 #import "GRTestCase.h"
 
-@interface GHTestOnMainThread : GRTestCase { }
+@interface GRTestOnMainThread : GRTestCase { }
 @end
 
-static BOOL gGHTestOnMainThreadRunning = NO;
+static BOOL gGRTestOnMainThreadRunning = NO;
 
-@implementation GHTestOnMainThread
+@implementation GRTestOnMainThread
 
 - (BOOL)shouldRunOnMainThread {
   return YES;
@@ -45,24 +45,24 @@ static BOOL gGHTestOnMainThreadRunning = NO;
 }
 
 - (void)testNotConcurrent {
-  GRAssertFalse(gGHTestOnMainThreadRunning);
+  GRAssertFalse(gGRTestOnMainThreadRunning);
   [NSThread sleepForTimeInterval:1];
-  GRAssertFalse(gGHTestOnMainThreadRunning);
+  GRAssertFalse(gGRTestOnMainThreadRunning);
 }
 
 
 @end
 
 
-@interface GHTestOnMainThreadNotConcurrent : GRTestCase { }
+@interface GRTestOnMainThreadNotConcurrent : GRTestCase { }
 @end
 
-@implementation GHTestOnMainThreadNotConcurrent
+@implementation GRTestOnMainThreadNotConcurrent
 
 - (void)testNotConcurrent {
-  gGHTestOnMainThreadRunning = YES;
+  gGRTestOnMainThreadRunning = YES;
   [NSThread sleepForTimeInterval:1];
-  gGHTestOnMainThreadRunning = NO;
+  gGRTestOnMainThreadRunning = NO;
 }
 
 @end

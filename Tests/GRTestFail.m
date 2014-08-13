@@ -1,5 +1,5 @@
 //
-//  GHTestFail.m
+//  GRTestFail.m
 //  GRUnit
 //
 //  Created by Gabriel Handford on 7/15/09.
@@ -8,10 +8,10 @@
 
 #import "GRTestCase.h"
 
-@interface GHTestFail : GRTestCase { }
+@interface GRTestFail : GRTestCase { }
 @end
 
-@implementation GHTestFail
+@implementation GRTestFail
 
 - (void)testFail_EXPECTED {
   GRFail(@"Test failure");

@@ -24,14 +24,14 @@
 		00AEEECC19931D4B00D9A741 /* GRTestViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 00AEEEB919931D4B00D9A741 /* GRTestViewModel.m */; };
 		00AEEED91993214900D9A741 /* GTMNSString+XML.m in Sources */ = {isa = PBXBuildFile; fileRef = 00AEEED41993214900D9A741 /* GTMNSString+XML.m */; };
 		00AEEEDA1993214900D9A741 /* GTMObjC2Runtime.m in Sources */ = {isa = PBXBuildFile; fileRef = 00AEEED61993214900D9A741 /* GTMObjC2Runtime.m */; };
-		00AEEEE9199323D300D9A741 /* GHDispatchTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 00AEEEDE199323D300D9A741 /* GHDispatchTest.m */; };
-		00AEEEEA199323D300D9A741 /* GHSlowTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 00AEEEDF199323D300D9A741 /* GHSlowTest.m */; };
-		00AEEEEB199323D300D9A741 /* GHTestEmpty.m in Sources */ = {isa = PBXBuildFile; fileRef = 00AEEEE0199323D300D9A741 /* GHTestEmpty.m */; };
-		00AEEEEC199323D300D9A741 /* GHTestException.m in Sources */ = {isa = PBXBuildFile; fileRef = 00AEEEE1199323D300D9A741 /* GHTestException.m */; };
-		00AEEEED199323D300D9A741 /* GHTestFail.m in Sources */ = {isa = PBXBuildFile; fileRef = 00AEEEE2199323D300D9A741 /* GHTestFail.m */; };
-		00AEEEEE199323D300D9A741 /* GHTestLogTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 00AEEEE3199323D300D9A741 /* GHTestLogTest.m */; };
-		00AEEEEF199323D300D9A741 /* GHTestMacrosTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 00AEEEE4199323D300D9A741 /* GHTestMacrosTest.m */; };
-		00AEEEF0199323D300D9A741 /* GHTestOnMainThread.m in Sources */ = {isa = PBXBuildFile; fileRef = 00AEEEE5199323D300D9A741 /* GHTestOnMainThread.m */; };
+		00AEEEE9199323D300D9A741 /* GRDispatchTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 00AEEEDE199323D300D9A741 /* GRDispatchTest.m */; };
+		00AEEEEA199323D300D9A741 /* GRSlowTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 00AEEEDF199323D300D9A741 /* GRSlowTest.m */; };
+		00AEEEEB199323D300D9A741 /* GRTestEmpty.m in Sources */ = {isa = PBXBuildFile; fileRef = 00AEEEE0199323D300D9A741 /* GRTestEmpty.m */; };
+		00AEEEEC199323D300D9A741 /* GRTestException.m in Sources */ = {isa = PBXBuildFile; fileRef = 00AEEEE1199323D300D9A741 /* GRTestException.m */; };
+		00AEEEED199323D300D9A741 /* GRTestFail.m in Sources */ = {isa = PBXBuildFile; fileRef = 00AEEEE2199323D300D9A741 /* GRTestFail.m */; };
+		00AEEEEE199323D300D9A741 /* GRTestLogTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 00AEEEE3199323D300D9A741 /* GRTestLogTest.m */; };
+		00AEEEEF199323D300D9A741 /* GRTestMacrosTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 00AEEEE4199323D300D9A741 /* GRTestMacrosTest.m */; };
+		00AEEEF0199323D300D9A741 /* GRTestOnMainThread.m in Sources */ = {isa = PBXBuildFile; fileRef = 00AEEEE5199323D300D9A741 /* GRTestOnMainThread.m */; };
 		00AEEEF5199324B500D9A741 /* GRUnitIOSTestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 00AEEEF4199324B500D9A741 /* GRUnitIOSTestViewController.m */; };
 		00AEEEF8199324DA00D9A741 /* GRUnitIOSTestView.m in Sources */ = {isa = PBXBuildFile; fileRef = 00AEEEF7199324DA00D9A741 /* GRUnitIOSTestView.m */; };
 		04D4EC4970724839A5F222F3 /* GTMObjC2Runtime.m in Sources */ = {isa = PBXBuildFile; fileRef = 00AEEED61993214900D9A741 /* GTMObjC2Runtime.m */; };
@@ -120,14 +120,14 @@
 		00AEEED61993214900D9A741 /* GTMObjC2Runtime.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMObjC2Runtime.m; sourceTree = "<group>"; };
 		00AEEED71993214900D9A741 /* GTMDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMDefines.h; sourceTree = "<group>"; };
 		00AEEED81993214900D9A741 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
-		00AEEEDE199323D300D9A741 /* GHDispatchTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GHDispatchTest.m; path = Tests/GHDispatchTest.m; sourceTree = "<group>"; };
-		00AEEEDF199323D300D9A741 /* GHSlowTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GHSlowTest.m; path = Tests/GHSlowTest.m; sourceTree = "<group>"; };
-		00AEEEE0199323D300D9A741 /* GHTestEmpty.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GHTestEmpty.m; path = Tests/GHTestEmpty.m; sourceTree = "<group>"; };
-		00AEEEE1199323D300D9A741 /* GHTestException.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GHTestException.m; path = Tests/GHTestException.m; sourceTree = "<group>"; };
-		00AEEEE2199323D300D9A741 /* GHTestFail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GHTestFail.m; path = Tests/GHTestFail.m; sourceTree = "<group>"; };
-		00AEEEE3199323D300D9A741 /* GHTestLogTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GHTestLogTest.m; path = Tests/GHTestLogTest.m; sourceTree = "<group>"; };
-		00AEEEE4199323D300D9A741 /* GHTestMacrosTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GHTestMacrosTest.m; path = Tests/GHTestMacrosTest.m; sourceTree = "<group>"; };
-		00AEEEE5199323D300D9A741 /* GHTestOnMainThread.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GHTestOnMainThread.m; path = Tests/GHTestOnMainThread.m; sourceTree = "<group>"; };
+		00AEEEDE199323D300D9A741 /* GRDispatchTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GRDispatchTest.m; path = Tests/GRDispatchTest.m; sourceTree = "<group>"; };
+		00AEEEDF199323D300D9A741 /* GRSlowTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GRSlowTest.m; path = Tests/GRSlowTest.m; sourceTree = "<group>"; };
+		00AEEEE0199323D300D9A741 /* GRTestEmpty.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GRTestEmpty.m; path = Tests/GRTestEmpty.m; sourceTree = "<group>"; };
+		00AEEEE1199323D300D9A741 /* GRTestException.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GRTestException.m; path = Tests/GRTestException.m; sourceTree = "<group>"; };
+		00AEEEE2199323D300D9A741 /* GRTestFail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GRTestFail.m; path = Tests/GRTestFail.m; sourceTree = "<group>"; };
+		00AEEEE3199323D300D9A741 /* GRTestLogTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GRTestLogTest.m; path = Tests/GRTestLogTest.m; sourceTree = "<group>"; };
+		00AEEEE4199323D300D9A741 /* GRTestMacrosTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GRTestMacrosTest.m; path = Tests/GRTestMacrosTest.m; sourceTree = "<group>"; };
+		00AEEEE5199323D300D9A741 /* GRTestOnMainThread.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GRTestOnMainThread.m; path = Tests/GRTestOnMainThread.m; sourceTree = "<group>"; };
 		00AEEEF3199324B500D9A741 /* GRUnitIOSTestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GRUnitIOSTestViewController.h; sourceTree = "<group>"; };
 		00AEEEF4199324B500D9A741 /* GRUnitIOSTestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GRUnitIOSTestViewController.m; sourceTree = "<group>"; };
 		00AEEEF6199324DA00D9A741 /* GRUnitIOSTestView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GRUnitIOSTestView.h; sourceTree = "<group>"; };
@@ -292,14 +292,14 @@
 		7CFD8EDFC88846F8ACCED3C1 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				00AEEEDE199323D300D9A741 /* GHDispatchTest.m */,
-				00AEEEDF199323D300D9A741 /* GHSlowTest.m */,
-				00AEEEE0199323D300D9A741 /* GHTestEmpty.m */,
-				00AEEEE1199323D300D9A741 /* GHTestException.m */,
-				00AEEEE2199323D300D9A741 /* GHTestFail.m */,
-				00AEEEE3199323D300D9A741 /* GHTestLogTest.m */,
-				00AEEEE4199323D300D9A741 /* GHTestMacrosTest.m */,
-				00AEEEE5199323D300D9A741 /* GHTestOnMainThread.m */,
+				00AEEEDE199323D300D9A741 /* GRDispatchTest.m */,
+				00AEEEDF199323D300D9A741 /* GRSlowTest.m */,
+				00AEEEE0199323D300D9A741 /* GRTestEmpty.m */,
+				00AEEEE1199323D300D9A741 /* GRTestException.m */,
+				00AEEEE2199323D300D9A741 /* GRTestFail.m */,
+				00AEEEE3199323D300D9A741 /* GRTestLogTest.m */,
+				00AEEEE4199323D300D9A741 /* GRTestMacrosTest.m */,
+				00AEEEE5199323D300D9A741 /* GRTestOnMainThread.m */,
 				A9C69C0CB44D4F0B8679B070 /* main.m */,
 			);
 			name = Tests;
@@ -433,15 +433,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				00AEEEEB199323D300D9A741 /* GHTestEmpty.m in Sources */,
-				00AEEEED199323D300D9A741 /* GHTestFail.m in Sources */,
-				00AEEEE9199323D300D9A741 /* GHDispatchTest.m in Sources */,
-				00AEEEEE199323D300D9A741 /* GHTestLogTest.m in Sources */,
-				00AEEEF0199323D300D9A741 /* GHTestOnMainThread.m in Sources */,
+				00AEEEEB199323D300D9A741 /* GRTestEmpty.m in Sources */,
+				00AEEEED199323D300D9A741 /* GRTestFail.m in Sources */,
+				00AEEEE9199323D300D9A741 /* GRDispatchTest.m in Sources */,
+				00AEEEEE199323D300D9A741 /* GRTestLogTest.m in Sources */,
+				00AEEEF0199323D300D9A741 /* GRTestOnMainThread.m in Sources */,
 				B5C271A4A0064D3AB0A02C64 /* main.m in Sources */,
-				00AEEEEF199323D300D9A741 /* GHTestMacrosTest.m in Sources */,
-				00AEEEEC199323D300D9A741 /* GHTestException.m in Sources */,
-				00AEEEEA199323D300D9A741 /* GHSlowTest.m in Sources */,
+				00AEEEEF199323D300D9A741 /* GRTestMacrosTest.m in Sources */,
+				00AEEEEC199323D300D9A741 /* GRTestException.m in Sources */,
+				00AEEEEA199323D300D9A741 /* GRSlowTest.m in Sources */,
 				CF84D44CC129436D96277332 /* GRTestViewModel.m in Sources */,
 				F6BABC7A3D4B4F3998CC58C0 /* GRUnitIOSTestViewController.m in Sources */,
 				2D905A237771403A9818A7FE /* NSException+GRTestFailureExceptions.m in Sources */,

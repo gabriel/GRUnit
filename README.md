@@ -174,6 +174,7 @@ This project uses GRUnit. Open `GRUnit.xcworkspace` and run the Tests target.
 1. Replace `#import <GHUnit/GHUnit.h>` with `#import <GRUnit/GRUnit.h>`
 1. Replace `GHTestCase` with `GRTestCase`
 1. Replace `GHAssert...` with `GRAssert...` and remove the description argument (usually nil).
+1. Replace `GHTestLog` with `GRTestLog`.
 
 ### Install Command Line
 

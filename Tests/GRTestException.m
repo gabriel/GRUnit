@@ -1,5 +1,5 @@
 //
-//  GHTestFailWithException.m
+//  GRTestFailWithException.m
 //  GRUnit
 //
 //  Created by Gabriel on 8/6/14.
@@ -8,10 +8,10 @@
 
 #import "GRTestCase.h"
 
-@interface GHTestException : GRTestCase { }
+@interface GRTestException : GRTestCase { }
 @end
 
-@implementation GHTestException : GRTestCase { }
+@implementation GRTestException : GRTestCase { }
 
 - (void)testException_EXPECTED {
   GRTestLog(@"Will raise an exception");

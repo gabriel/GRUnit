@@ -1,5 +1,5 @@
 //
-//  GHTestLogTest.m
+//  GRTestLogTest.m
 //  GRUnit
 //
 //  Created by Gabriel Handford on 7/30/09.
@@ -8,10 +8,10 @@
 
 #import "GRTestCase.h"
 
-@interface GHTestLogTest : GRTestCase { }
+@interface GRTestLogTest : GRTestCase { }
 @end
 
-@implementation GHTestLogTest
+@implementation GRTestLogTest
 
 - (void)testLog {
   for(NSInteger i = 0; i < 100; i++) {

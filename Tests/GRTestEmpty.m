@@ -1,5 +1,5 @@
 //
-//  GHTestEmpty.m
+//  GRTestEmpty.m
 //  GRUnit
 //
 //  Created by Gabriel Handford on 10/19/09.
@@ -8,9 +8,9 @@
 
 #import "GRTestCase.h"
 
-@interface GHTestEmpty : GRTestCase { }
+@interface GRTestEmpty : GRTestCase { }
 @end
 
-@implementation GHTestEmpty
+@implementation GRTestEmpty
 
 @end
