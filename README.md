@@ -4,6 +4,12 @@ GRUnit is a test framework for iOS which runs as a Test (app) target in your pro
 
 ![GRUnit-1.0.1](https://raw.githubusercontent.com/gabriel/GRUnit/master/GRUnit-1.0.1.png)
 
+Projects using GRUnit:
+
+* (NAChloride)[https://github.com/gabriel/NAChloride]
+* (MPMessagePack)[https://github.com/gabriel/MPMessagePack]
+* (TSTripleSec)[https://github.com/gabriel/TSTripleSec]
+
 ## Install
 
 ### Install the GRUnit gem
@@ -82,6 +88,9 @@ $ grunit sync -n ProjectName
   GRAssertEqualStrings(@"a string", @"a string");
   GRAssertEqualObjects(@[@"test"], expectedArray);
   // See more macros below
+
+  // To log in a test and have it show in the UI with this test
+  GHTestLog(@"Log this number: %@", @(123));
 }
 
 // Test with completion (async) callback
@@ -175,6 +184,7 @@ This project uses GRUnit. Open `GRUnit.xcworkspace` and run the Tests target.
 1. Replace `GHTestCase` with `GRTestCase`
 1. Replace `GHAssert...` with `GRAssert...` and remove the description argument (usually nil).
 1. Replace `GHTestLog` with `GRTestLog`.
+1. Replace `GHUnitIOSAppDelegate` with `GRUnitIOSAppDelegate`.
 
 ### Install Command Line
 
