@@ -6,9 +6,9 @@ GRUnit is a test framework for iOS which runs as a Test (app) target in your pro
 
 Projects using GRUnit:
 
-* (NAChloride)[https://github.com/gabriel/NAChloride]
-* (MPMessagePack)[https://github.com/gabriel/MPMessagePack]
-* (TSTripleSec)[https://github.com/gabriel/TSTripleSec]
+* [NAChloride](https://github.com/gabriel/NAChloride)
+* [MPMessagePack](https://github.com/gabriel/MPMessagePack)
+* [TSTripleSec](https://github.com/gabriel/TSTripleSec)
 
 ## Install
 
