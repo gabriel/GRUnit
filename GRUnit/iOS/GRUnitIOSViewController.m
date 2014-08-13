@@ -39,6 +39,8 @@ NSString *const GRUnitFilterKey = @"Filter";
 @property GRUnitIOSTableViewDataSource *dataSource;
 @property UIBarButtonItem *runButton;
 @property BOOL userDidDrag; // If set then we will no longer auto scroll as tests are run
+
+@property GRUnitIOSTestViewController *testViewController;
 @end
 
 @implementation GRUnitIOSViewController
@@ -196,9 +198,9 @@ NSString *const GRUnitFilterKey = @"Filter";
     GRTestNode *sectionNode = [[_dataSource root] filteredChildren][indexPath.section];
     GRTestNode *testNode = [sectionNode filteredChildren][indexPath.row];
     
-    GRUnitIOSTestViewController *testViewController = [[GRUnitIOSTestViewController alloc] init];
-    [testViewController setTest:testNode.test runnerDelegate:self];
-    [self.navigationController pushViewController:testViewController animated:YES];
+    _testViewController = [[GRUnitIOSTestViewController alloc] init];
+    [_testViewController setTest:testNode.test runnerDelegate:self];
+    [self.navigationController pushViewController:_testViewController animated:YES];
   }
 }
 
@@ -232,6 +234,9 @@ NSString *const GRUnitFilterKey = @"Filter";
 
 - (void)testRunner:(GRTestRunner *)runner test:(id<GRTest>)test didLog:(NSString *)message {
   [self setStatusText:message];
+  if ([test isEqual:_testViewController.test]) {
+    [_testViewController log:message];
+  }
 }
 
 - (void)testRunner:(GRTestRunner *)runner didStartTest:(id<GRTest>)test {

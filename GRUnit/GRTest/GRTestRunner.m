@@ -118,9 +118,8 @@
   }
   _group = dispatch_group_create();
   
-  GHUWeakSelf blockSelf = self;
   dispatch_group_async(_group, _queue, ^{
-    [blockSelf.test run:^(id<GRTest> test) {
+    [_test run:^(id<GRTest> test) {
       dispatch_async(dispatch_get_main_queue(), ^{
         if (completion) completion(test);
       });

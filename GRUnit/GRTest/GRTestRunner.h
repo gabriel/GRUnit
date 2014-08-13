@@ -116,8 +116,7 @@
  
     GRTestRunner *runner = [[GRTestRunner alloc] initWithTest:suite];
     runner.delegate = self;
-    [runner run];
-    [runner wait];
+    [runner run:^(id<GRTest> test) { }];
  
  */
 @interface GRTestRunner : NSObject <GRTestDelegate>

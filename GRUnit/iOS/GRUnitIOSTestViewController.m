@@ -34,6 +34,9 @@
 @interface GRUnitIOSTestViewController ()
 @property GRUnitIOSTestView *testView;
 @property GRTestNode *testNode;
+
+@property GRTestRunner *runner;
+@property id<GRTest> test;
 @end
 
 @implementation GRUnitIOSTestViewController
@@ -64,38 +67,53 @@
   return UIInterfaceOrientationMaskAll;
 }
 
+- (void)log:(NSString *)text {
+  [_testView log:text];
+}
+
 - (void)_runTest {
   id<GRTest> testCopy = [_testNode.test copyWithZone:NULL];
   NSLog(@"Re-running: %@", testCopy);
-  [_testView setText:@"Running..."];
-  GRTestRunner *runner = [GRTestRunner runnerForTest:testCopy];
-  runner.delegate = _runnerDelegate;
+  [_testView setText:[NSString stringWithFormat:@"%@...", [_testNode identifier]]];
+  _runner = [GRTestRunner runnerForTest:testCopy];
+  _runner.delegate = _runnerDelegate;
   GHUWeakSelf blockSelf = self;
-  [runner run:^(id<GRTest> test) {
-    [blockSelf setTest:test runnerDelegate:blockSelf.runnerDelegate];
+  [_runner run:^(id<GRTest> test) {
+    [blockSelf updateNode:test];
   }];
+}
+
+- (void)updateNode:(id<GRTest>)test {
+  _testNode = [GRTestNode nodeWithTest:test children:nil source:nil];
+  [self log:[self statusDescription]];
+}
+
+- (NSString *)statusDescription {
+  NSMutableString *text = [NSMutableString stringWithCapacity:200];
+  [text appendFormat:@"%@ %@\n", [_testNode identifier], [_testNode statusString]];
+  NSString *stackTrace = [_testNode stackTrace];
+  if (stackTrace) [text appendFormat:@"\n%@\n", stackTrace];
+  return text;
 }
 
 - (NSString *)updateTestView {
   NSMutableString *text = [NSMutableString stringWithCapacity:200];
-  [text appendFormat:@"%@ %@\n", [_testNode identifier], [_testNode statusString]];
   NSString *log = [_testNode log];
   if (log) [text appendFormat:@"\nLog:\n%@\n", log];
-  NSString *stackTrace = [_testNode stackTrace];
-  if (stackTrace) [text appendFormat:@"\n%@\n", stackTrace];
+  [text appendString:[self statusDescription]];
   [_testView setText:text];
   return text;
 }
 
 - (void)setTest:(id<GRTest>)test runnerDelegate:(id<GRTestRunnerDelegate>)runnerDelegate {
+  _test = test;
   _runnerDelegate = runnerDelegate;
   
   [self view];
   self.title = [test name];
 
   _testNode = [GRTestNode nodeWithTest:test children:nil source:nil];
-  NSString *text = [self updateTestView];
-  NSLog(@"%@", text);
+  [self updateTestView];
 }
 
 @end

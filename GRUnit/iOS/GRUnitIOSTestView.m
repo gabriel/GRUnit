@@ -42,7 +42,7 @@
     
     _textView = [[UITextView alloc] init];
     _textView.editable = NO;
-    _textView.font = [UIFont systemFontOfSize:13];
+    _textView.font = [UIFont systemFontOfSize:12];
     _textView.textColor = [UIColor blackColor];
     [self addSubview:_textView];
   }
@@ -51,15 +51,28 @@
 
 - (void)layoutSubviews {
   [super layoutSubviews];
-   CGSize size = [_textView sizeThatFits:CGSizeMake(self.frame.size.width - 8, self.frame.size.height - 8)];
   _textView.frame = CGRectMake(8, 8, self.frame.size.width - 8, self.frame.size.height - 8);
-  _textView.contentSize = size;
+  
+  CGSize size = [_textView sizeThatFits:CGSizeMake(1024, 1024)];
+  _textView.contentSize = CGSizeMake(self.frame.size.width - 8, size.height);
 }
 
 - (void)setText:(NSString *)text {
   _textView.text = text;
   [self setNeedsLayout];
   [self setNeedsDisplay];
+}
+
+- (void)log:(NSString *)text {
+  _textView.text = [NSString stringWithFormat:@"%@\n%@", _textView.text, text];
+
+  [self setNeedsLayout];
+//  dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (0 * NSEC_PER_MSEC)), dispatch_get_main_queue(), ^{
+//    CGPoint bottomOffset = CGPointMake(0, _textView.contentSize.height - _textView.frame.size.height);
+//    if (bottomOffset.y > 0) {
+//      [_textView setContentOffset:bottomOffset animated:YES];
+//    }
+//  });
 }
 
 @end

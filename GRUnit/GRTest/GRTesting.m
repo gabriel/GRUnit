@@ -183,52 +183,6 @@ static GRTesting *gSharedInstance;
 
 // GTM_BEGIN
 
-/*
-- (NSArray *)loadTestsFromTarget:(id)target {
-  NSMutableArray *tests = [NSMutableArray array];
-  
-  unsigned int methodCount;
-  Method *methods = class_copyMethodList([target class], &methodCount);
-  if (!methods) {
-    return nil;
-  }
-  // This handles disposing of methods for us even if an
-  // exception should fly. 
-  [NSData dataWithBytesNoCopy:methods
-                       length:sizeof(Method) * methodCount];
-  // Sort our methods so they are called in Alphabetical order just
-  // because we can.
-  qsort(methods, methodCount, sizeof(Method), MethodSort);
-  for (size_t j = 0; j < methodCount; ++j) {
-    Method currMethod = methods[j];
-    SEL sel = method_getName(currMethod);
-    char *returnType = NULL;
-    const char *name = sel_getName(sel);
-    // If it starts with test, takes 2 args (target and sel) and returns
-    // void run it.
-    if (strstr(name, "test") == name) {
-      returnType = method_copyReturnType(currMethod);
-      if (returnType) {
-        // This handles disposing of returnType for us even if an
-        // exception should fly. Length +1 for the terminator, not that
-        // the length really matters here, as we never reference inside
-        // the data block.
-        [NSData dataWithBytesNoCopy:returnType
-                             length:strlen(returnType) + 1];
-      }
-    }
-    if (returnType  // True if name starts with "test"
-        && strcmp(returnType, @encode(void)) == 0
-        && method_getNumberOfArguments(currMethod) == 2) {
-      
-      GRTest *test = [GRTest testWithTarget:target selector:sel];
-      [tests addObject:test];
-    }
-  }
-  
-  return tests;
-}
-*/
 - (NSArray *)loadTestsFromTarget:(id)target delegate:(id<GRTestDelegate>)delegate {
   NSMutableArray *invocations = nil;
   // Need to walk all the way up the parent classes collecting methods (in case
@@ -295,10 +249,7 @@ static GRTesting *gSharedInstance;
 }
 
 
-+ (void)runTestWithTarget:(id)target selector:(SEL)selector completion:(void (^)(NSException *exception, NSTimeInterval interval))completion {
- 
-  [target setCurrentSelector:selector];
-  
++ (void)runTestWithTarget:(id)target selector:(SEL)selector completion:(void (^)(NSException *exception, NSTimeInterval interval))completion {  
   @try {
     // Private setUp internal to GRUnit (in case subclasses fail to call super)
     if ([target respondsToSelector:@selector(_setUp)]) {

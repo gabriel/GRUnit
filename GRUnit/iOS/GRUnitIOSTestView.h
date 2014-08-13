@@ -35,4 +35,6 @@
 
 - (void)setText:(NSString *)text;
 
+- (void)log:(NSString *)text;
+
 @end

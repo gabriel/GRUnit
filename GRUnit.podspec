@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name     = 'GRUnit'
-  s.version  = '1.0.4'
+  s.version  = '1.0.5'
   s.license = { :type => 'MIT', :file => 'LICENSE' }
   s.summary  = 'Test Framework for Objective-C.'
   s.homepage = 'https://github.com/gabriel/GRUnit'

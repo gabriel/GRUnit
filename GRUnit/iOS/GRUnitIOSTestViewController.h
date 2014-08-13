@@ -35,7 +35,10 @@
  */
 @interface GRUnitIOSTestViewController : UIViewController
 
+@property (readonly) id<GRTest> test;
 @property (weak) id<GRTestRunnerDelegate> runnerDelegate;
+
+- (void)log:(NSString *)text;
 
 - (void)setTest:(id<GRTest>)test runnerDelegate:(id<GRTestRunnerDelegate>)runnerDelegate;
 

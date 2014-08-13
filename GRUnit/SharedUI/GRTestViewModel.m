@@ -60,7 +60,6 @@
 	
   [_runner cancel];
   _runner.delegate = nil;
-  
 }
 
 - (NSString *)name {

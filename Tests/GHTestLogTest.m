@@ -14,9 +14,9 @@
 @implementation GHTestLogTest
 
 - (void)testLog {
-  for(NSInteger i = 0; i < 30; i++) {
+  for(NSInteger i = 0; i < 100; i++) {
     GRTestLog(@"Line: %d", (int)i);
-    [NSThread sleepForTimeInterval:0.01];
+    [NSThread sleepForTimeInterval:0.05];
   }
 }
 
