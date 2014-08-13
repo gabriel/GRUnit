@@ -123,7 +123,7 @@ BOOL GRTestStatusEnded(GRTestStatus status) {
 - (void)reset {
   _status = GRTestStatusNone;
   _interval = 0;
-  _exception = nil; 
+  _exception = nil;
   [_delegate testDidUpdate:self source:self];
 }
 
@@ -133,6 +133,9 @@ BOOL GRTestStatusEnded(GRTestStatus status) {
     // TODO(gabe): Call cancel on target if available?    
   } else {
     _status = GRTestStatusCancelled;
+  }
+  if ([_target respondsToSelector:@selector(cancel)]) {
+    [_target cancel];
   }
   [_delegate testDidUpdate:self source:self];
 }
@@ -200,6 +203,10 @@ BOOL GRTestStatusEnded(GRTestStatus status) {
   [_delegate testDidEnd:self source:self];
   
   completion(self);
+  
+  if ([_target respondsToSelector:@selector(setCurrentSelector:)]) {
+    [_target setCurrentSelector:NULL];
+  }
 }
 
 - (void)run:(GRTestCompletionBlock)completion {
@@ -217,7 +224,11 @@ BOOL GRTestStatusEnded(GRTestStatus status) {
   _exception = nil;
   
   NSMethodSignature *signature = [_target methodSignatureForSelector:_selector];
-    
+  
+  if ([_target respondsToSelector:@selector(setCurrentSelector:)]) {
+    [_target setCurrentSelector:_selector];
+  }
+  
   if ([signature numberOfArguments] == 2) {
     NSException *exception = nil;
     NSTimeInterval interval = 0;

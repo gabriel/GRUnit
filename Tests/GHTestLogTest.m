@@ -15,6 +15,7 @@
 
 - (void)testLog {
   for(NSInteger i = 0; i < 100; i++) {
+    if (self.isCancelling) break;
     GRTestLog(@"Line: %d", (int)i);
     [NSThread sleepForTimeInterval:0.05];
   }

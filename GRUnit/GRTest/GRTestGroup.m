@@ -142,6 +142,7 @@
   for (id<GRTest> test in _children) {
     [test cancel];
   }
+  [_testCase cancel];
   [_delegate testDidUpdate:self source:self];
 }
 

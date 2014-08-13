@@ -71,19 +71,27 @@
   [_testView log:text];
 }
 
+- (void)_cancel {
+  [_runner cancel];
+}
+
 - (void)_runTest {
+  self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStyleDone target:self action:@selector(_cancel)];
+  
   id<GRTest> testCopy = [_testNode.test copyWithZone:NULL];
   NSLog(@"Re-running: %@", testCopy);
   [_testView setText:[NSString stringWithFormat:@"%@...", [_testNode identifier]]];
   _runner = [GRTestRunner runnerForTest:testCopy];
   _runner.delegate = _runnerDelegate;
-  GHUWeakSelf blockSelf = self;
+  GRWeakSelf blockSelf = self;
   [_runner run:^(id<GRTest> test) {
-    [blockSelf updateNode:test];
+    [blockSelf didFinishTest:test];
   }];
 }
 
-- (void)updateNode:(id<GRTest>)test {
+- (void)didFinishTest:(id<GRTest>)test {
+  self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Re-run" style:UIBarButtonItemStyleDone target:self action:@selector(_runTest)];
+  
   _testNode = [GRTestNode nodeWithTest:test children:nil source:nil];
   [self log:[self statusDescription]];
 }

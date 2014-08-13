@@ -84,6 +84,7 @@ $ grunit sync -n ProjectName
   // See more macros below
 }
 
+// Test with completion (async) callback
 - (void)testWithCompletion:(dispatch_block_t)completion {
   dispatch_queue_t queue = dispatch_queue_create("MyTest", NULL);
   dispatch_async(queue, ^{
@@ -93,6 +94,13 @@ $ grunit sync -n ProjectName
     // Call completion when the test is done
     completion();
   });
+}
+
+// For a long test, you can check cancel state and break/return
+- (void)testCancel {
+  for (NSInteger i = 0; i < 123456789; i++) {
+    if (self.isCancelling) break;
+  }
 }
 
 @end
@@ -160,6 +168,12 @@ GRAssertNoThrowSpecificNamed(expr, specificException, aName)
 ### Example Project
 
 This project uses GRUnit. Open `GRUnit.xcworkspace` and run the Tests target.
+
+### Converting from GHUnit
+
+1. Replace `#import <GHUnit/GHUnit.h>` with `#import <GRUnit/GRUnit.h>`
+1. Replace `GHTestCase` with `GRTestCase`
+1. Replace `GHAssert...` with `GRAssert...` and remove the description argument (usually nil).
 
 ### Install Command Line
 

@@ -610,17 +610,6 @@ withDescription:nil]]; \
 atLine: __LINE__ \
 withDescription: GRComposeString(description, ##__VA_ARGS__)]]
 
-/*!
- Generates a failure unconditionally (weak self reference).
- 
- @param description A format string as in the printf() function. Can be nil or an empty string but must be present
- @param ... A variable number of arguments to the format string. Can be absent
- */
-#define GRWeakFail(weakSelf, description, ...) \
-[weakSelf failWithException:[NSException ghu_failureInFile: [NSString stringWithUTF8String:__FILE__] \
-atLine: __LINE__ \
-withDescription: GRComposeString(description, ##__VA_ARGS__)]]
-
 
 /*! 
  Generates a failure when a1 is not nil.

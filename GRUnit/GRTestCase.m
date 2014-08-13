@@ -45,12 +45,20 @@
 
 - (void)tearDown { }
 
+- (void)_tearDown {
+  _cancelling = NO;
+}
+
 - (BOOL)isCLIDisabled {
   return NO;
 }
 
 - (void)log:(NSString *)message {
   [_logWriter log:message testCase:self];
+}
+
+- (void)cancel {
+  _cancelling = YES;
 }
 
 @end

@@ -60,14 +60,14 @@
 /*!
  For when you need a weak reference of an object, example: `GHWeakObject(obj) wobj = obj;`
  */
-#define GHUWeakObject(o) __typeof__(o) __weak
+#define GRWeakObject(o) __typeof__(o) __weak
 
 /*!
  For when you need a weak reference to self, example: `GHWeakSelf wself = self;`
  */
-#define GHUWeakSelf GHUWeakObject(self)
+#define GRWeakSelf GRWeakObject(self)
 
-#define GRUErrorHandler(self) (^(NSError *error) { GRWeakFail(self, @"Error: %@", error); })
+#define GRErrorHandler (^(NSError *error) { GRFail(@"Error: %@", error); })
 
 /*!
  The base class for a test case. 
@@ -98,6 +98,7 @@
 
 @property SEL currentSelector;
 @property (weak) id<GRTestCaseLogWriter> logWriter;
+@property (readonly, getter=isCancelling) BOOL cancelling;
 
 //! Run before each test method
 - (void)setUp;
@@ -119,6 +120,11 @@
  @param message Message to log
  */
 - (void)log:(NSString *)message;
+
+/*!
+ Set test case cancelling.
+ */
+- (void)cancel;
 
 /*!
  Whether the test class should be run as a part of command line tests.

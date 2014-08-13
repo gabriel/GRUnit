@@ -158,7 +158,7 @@
     [self log:[NSString stringWithFormat:@"Starting %@\n", [source identifier]]];
   }
   
-  GHUWeakSelf blockSelf = self;
+  GRWeakSelf blockSelf = self;
   [self dispatch:^{
     if ([blockSelf.delegate respondsToSelector:@selector(testRunner:didStartTest:)])
     [blockSelf.delegate testRunner:self didStartTest:source]; 
@@ -166,7 +166,7 @@
 }
 
 - (void)testDidUpdate:(id<GRTest>)test source:(id<GRTest>)source {
-  GHUWeakSelf blockSelf = self;
+  GRWeakSelf blockSelf = self;
   [self dispatch:^{
     if ([blockSelf.delegate respondsToSelector:@selector(testRunner:didUpdateTest:)])
       [blockSelf.delegate testRunner:self didUpdateTest:source];  
@@ -182,7 +182,7 @@
       [self log:message];
     }
     
-    GHUWeakSelf blockSelf = self;
+    GRWeakSelf blockSelf = self;
     [self dispatch:^{
       if ([blockSelf.delegate respondsToSelector:@selector(testRunner:didEndTest:)])
         [blockSelf.delegate testRunner:self didEndTest:source];
@@ -202,7 +202,7 @@
 
 - (void)test:(id<GRTest>)test didLog:(NSString *)message source:(id<GRTest>)source {
   NSLog(@"%@: %@", source, message);
-  GHUWeakSelf blockSelf = self;
+  GRWeakSelf blockSelf = self;
   [self dispatch:^{
     if ([blockSelf.delegate respondsToSelector:@selector(testRunner:test:didLog:)])
       [blockSelf.delegate testRunner:self test:source didLog:message];
@@ -215,7 +215,7 @@
   NSString *message = [NSString stringWithFormat:@"Test Suite '%@' started.\n", [_test name]];
   [self log:message];
   
-  GHUWeakSelf blockSelf = self;
+  GRWeakSelf blockSelf = self;
   [self dispatch:^{
     if ([blockSelf.delegate respondsToSelector:@selector(testRunnerDidStart:)])
       [blockSelf.delegate testRunnerDidStart:self];
@@ -229,7 +229,7 @@
   _cancelling = NO;
   _running = NO;
   
-  GHUWeakSelf blockSelf = self;
+  GRWeakSelf blockSelf = self;
   [self dispatch:^{
     if ([blockSelf.delegate respondsToSelector:@selector(testRunnerDidCancel:)])
       [blockSelf.delegate testRunnerDidCancel:self];
@@ -262,7 +262,7 @@
   _cancelling = NO;
   _running = NO;
 
-  GHUWeakSelf blockSelf = self;
+  GRWeakSelf blockSelf = self;
   [self dispatch:^{
     if ([blockSelf.delegate respondsToSelector:@selector(testRunnerDidEnd:)])
       [blockSelf.delegate testRunnerDidEnd:self];   

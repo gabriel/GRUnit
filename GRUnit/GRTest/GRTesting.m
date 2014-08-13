@@ -316,10 +316,7 @@ static GRTesting *gSharedInstance;
 
         if ([target respondsToSelector:@selector(setUp)])
           [target performSelector:@selector(setUp)];
-        @try {  
-          if ([target respondsToSelector:@selector(setCurrentSelector:)])
-            [target setCurrentSelector:selector];
-
+        @try {
           // Runs the test
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
@@ -329,8 +326,6 @@ static GRTesting *gSharedInstance;
         } @catch (NSException *exception) {
           if (!testException) testException = exception;
         }
-        if ([target respondsToSelector:@selector(setCurrentSelector:)])
-          [target setCurrentSelector:NULL];
 
         if ([target respondsToSelector:@selector(tearDown)])
           [target performSelector:@selector(tearDown)];
