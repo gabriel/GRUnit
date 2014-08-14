@@ -8,11 +8,11 @@
 
 #import "GRTestCase.h"
 
-@interface GHSlowTest : GRTestCase { }
+@interface GRSlowTest : GRTestCase { }
 @end
 
 
-@implementation GHSlowTest
+@implementation GRSlowTest
 
 - (void)test2Seconds {
   [NSThread sleepForTimeInterval:2];

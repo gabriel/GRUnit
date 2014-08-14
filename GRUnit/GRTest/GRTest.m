@@ -77,6 +77,12 @@ BOOL GRTestStatusEnded(GRTestStatus status) {
 @property NSMutableArray *log;
 @end
 
+@protocol GRTestSetUpTearDown
+- (void)_setUp;
+- (void)_tearDown;
+@end
+
+
 @implementation GRTest
 
 - (id)initWithIdentifier:(NSString *)identifier name:(NSString *)name delegate:(id<GRTestDelegate>)delegate {
@@ -235,9 +241,56 @@ BOOL GRTestStatusEnded(GRTestStatus status) {
     [GRTesting runTestWithTarget:_target selector:_selector exception:&exception interval:&interval];
     [self _didRunWithException:exception interval:interval completion:completion];
   } else {
-    [GRTesting runTestWithTarget:_target selector:_selector completion:^(NSException *exception, NSTimeInterval interval) {
+    [self runTest:^(NSException *exception, NSTimeInterval interval) {
       [self _didRunWithException:exception interval:interval completion:completion];
     }];
+  }
+}
+
+- (void)runTest:(void (^)(NSException *exception, NSTimeInterval interval))completion {
+  @try {
+    // Private setUp internal to GRUnit (in case subclasses fail to call super)
+    if ([_target respondsToSelector:@selector(_setUp)]) {
+      [_target performSelector:@selector(_setUp)];
+    }
+    
+    if ([_target respondsToSelector:@selector(setUp)]) {
+      [_target performSelector:@selector(setUp)];
+    }
+  } @catch(NSException *e) {
+    completion(e, 0);
+    return;
+  }
+  
+  NSDate *startDate = [NSDate date];
+  
+  @try {
+    
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+    
+    [_target performSelector:_selector withObject:^() {
+      NSException *exception = nil;
+      @try {
+        if ([_target respondsToSelector:@selector(tearDown)]) {
+          [_target performSelector:@selector(tearDown)];
+        }
+        
+        // Private tearDown internal to GRUnit (in case subclasses fail to call super)
+        if ([_target respondsToSelector:@selector(_tearDown)]) {
+          [_target performSelector:@selector(_tearDown)];
+        }
+      } @catch(NSException *tearDownException) {
+        exception = tearDownException;
+      }
+      
+      completion(exception, [[NSDate date] timeIntervalSinceDate:startDate]);
+    }];
+    
+#pragma clang diagnostic pop
+    
+  } @catch(NSException *e) {
+    completion(e, [[NSDate date] timeIntervalSinceDate:startDate]);
   }
 }
 

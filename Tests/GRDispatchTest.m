@@ -8,10 +8,10 @@
 
 #import "GRTestCase.h"
 
-@interface GHDispatchTest : GRTestCase { }
+@interface GRDispatchTest : GRTestCase { }
 @end
 
-@implementation GHDispatchTest
+@implementation GRDispatchTest
 
 // This is the default setting
 - (void)testNotOnMainThread {
@@ -51,7 +51,7 @@
   });
 }
 
-- (void)_testDispatchFailure_EXPECTED:(dispatch_block_t)completion {
+- (void)_testDispatchFailure:(dispatch_block_t)completion {
   dispatch_queue_t queue = dispatch_queue_create("GHDispatchTest_testDispatchFailure_EXPECTED", NULL);
   dispatch_async(queue, ^{    
     GRFail(@"FAIL!");

@@ -35,9 +35,11 @@ static BOOL gGRTestOnMainThreadRunning = NO;
   GRAssertTrue([NSThread isMainThread]);
 }
 
-- (void)testFail_EXPECTED {
-  GRAssertTrue([NSThread isMainThread]);
-  GRFail(@"Test failure");
+- (void)testFail {
+  GRAssertThrows({
+    GRAssertTrue([NSThread isMainThread]);
+    GRFail(@"Test failure");
+  });
 }
 
 - (void)testSucceedAfterFail {
@@ -49,7 +51,6 @@ static BOOL gGRTestOnMainThreadRunning = NO;
   [NSThread sleepForTimeInterval:1];
   GRAssertFalse(gGRTestOnMainThreadRunning);
 }
-
 
 @end
 

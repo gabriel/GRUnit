@@ -13,9 +13,11 @@
 
 @implementation GRTestException : GRTestCase { }
 
-- (void)testException_EXPECTED {
-  GRTestLog(@"Will raise an exception");
-  [NSException raise:@"SomeException" format:@"Some reason for the exception"];
+- (void)testException {
+  GRAssertThrows({
+    GRTestLog(@"Will raise an exception");
+    [NSException raise:@"SomeException" format:@"Some reason for the exception"];
+  });
 }
 
 @end

@@ -13,8 +13,10 @@
 
 @implementation GRTestFail
 
-- (void)testFail_EXPECTED {
-  GRFail(@"Test failure");
+- (void)testFail {
+  GRAssertThrows({
+    GRFail(@"Test failure");
+  });
 }
 
 - (void)testSucceedAfterFail {

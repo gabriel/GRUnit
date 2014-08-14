@@ -63,11 +63,11 @@ To generate a test in your test target with name SampleTest:
 $ grunit add -n ProjectName -f SampleTest
 ```
 
-or read the `GRTestCase` info below.
+or read the `GRTestCase` example below.
 
 ### Sync all files references in main target to test target:
 
-If you want to add all the files in your main target to the test target, run this sync command.
+If you want to link all the files in your main target to the test target in your project file, run this sync command.
 
 ```xml
 $ grunit sync -n ProjectName

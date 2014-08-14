@@ -124,19 +124,7 @@ BOOL isTestFixtureOfClass(Class aClass, Class testCaseClass);
  */
 + (NSInteger)exceptionLineNumberForTest:(id<GRTest>)test;
 
-/*!
- Run test.
- @param target Target
- @param selector Selector
- @param exception Exception, if set, is retained and should be released by the caller.
- @param interval Time to run the test
- */
 + (BOOL)runTestWithTarget:(id)target selector:(SEL)selector exception:(NSException **)exception interval:(NSTimeInterval *)interval;
-
-/*!
- Run test async.
- */
-+ (void)runTestWithTarget:(id)target selector:(SEL)selector completion:(void (^)(NSException *exception, NSTimeInterval interval))completion;
 
 @end
 

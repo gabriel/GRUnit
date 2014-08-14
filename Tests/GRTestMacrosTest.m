@@ -22,10 +22,13 @@
 
 - (void)testEquals {
   GRAssertEquals(1U, 1U);
-  GRAssertEqualsWithAccuracy(15.0, 15.000001, 0.001);
+  GRAssertThrows({
+    GRAssertEquals(1U, 2.2);
+  });
 }
 
-- (void)testEqualsAccuracyFails {
+- (void)testEqualsAccuracy {
+  GRAssertEqualsWithAccuracy(15.0, 15.000001, 0.001);
   GRAssertThrows({
     GRAssertEqualsWithAccuracy(15.0, 16.0, 0.001);
   });
@@ -54,14 +57,13 @@
   });
 }
 
-- (void)testAssertNotEqualStrings_EXPECTED {
-  GRAssertNotEqualStrings(@"a", @"a");
-}
-
 - (void)testAssertNotEqualStrings {
   GRAssertNotEqualStrings(@"a", @"b");
   GRAssertNotEqualStrings(@"a", nil);
   GRAssertNotEqualStrings(nil, @"a");
+  GRAssertThrows({
+    GRAssertNotEqualStrings(@"a", @"a");
+  });
 }
 
 @end

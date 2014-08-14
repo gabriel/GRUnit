@@ -219,7 +219,7 @@ do { \
 if (strcmp(@encode(__typeof__(a1)), @encode(__typeof__(a2))) != 0) { \
 [self failWithException:[NSException ghu_failureInFile:[NSString stringWithUTF8String:__FILE__] \
 atLine:__LINE__ \
-withDescription:[@"Type mismatch -- " stringByAppendingString:nil]]]; \
+withDescription:@"Type mismatch"]]; \
 } else { \
 __typeof__(a1) a1value = (a1); \
 __typeof__(a2) a2value = (a2); \
@@ -286,7 +286,7 @@ do { \
 if (strcmp(@encode(__typeof__(a1)), @encode(__typeof__(a2))) != 0) { \
 [self failWithException:[NSException ghu_failureInFile:[NSString stringWithUTF8String:__FILE__] \
 atLine:__LINE__ \
-withDescription:[@"Type mismatch -- " stringByAppendingString:nil]]]; \
+withDescription:@"Type mismatch"]]; \
 } else { \
 __typeof__(a1) a1value = (a1); \
 __typeof__(a2) a2value = (a2); \
