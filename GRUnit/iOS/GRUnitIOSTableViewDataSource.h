@@ -39,6 +39,8 @@
 
 - (GRTestNode *)nodeForIndexPath:(NSIndexPath *)indexPath;
 
+- (GRTestNode *)nodeForId:(NSString *)nodeId;
+
 - (void)setSelectedForAllNodes:(BOOL)selected;
 
 @end

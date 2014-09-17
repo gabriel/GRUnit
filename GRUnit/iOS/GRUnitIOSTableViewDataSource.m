@@ -36,6 +36,15 @@
   return [sectionNode filteredChildren][indexPath.row];
 }
 
+- (GRTestNode *)nodeForId:(NSString *)nodeId {
+  for (GRTestNode *sectionNode in [[self root] filteredChildren]) {
+    if ([sectionNode.identifier isEqual:nodeId]) return sectionNode;
+    for (GRTestNode *node in [sectionNode filteredChildren]) {
+      if ([node.identifier isEqual:nodeId]) return node;
+    }
+  }
+  return nil;}
+
 - (void)setSelectedForAllNodes:(BOOL)selected {
   for(GRTestNode *sectionNode in [[self root] filteredChildren]) {
     for(GRTestNode *node in [sectionNode filteredChildren]) {

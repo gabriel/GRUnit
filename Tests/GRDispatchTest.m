@@ -8,7 +8,7 @@
 
 #import "GRTestCase.h"
 
-@interface GRDispatchTest : GRTestCase { }
+@interface GRDispatchTest : GRTestCase
 @end
 
 @implementation GRDispatchTest
@@ -56,6 +56,34 @@
   dispatch_async(queue, ^{    
     GRFail(@"FAIL!");
   });
+}
+
+@end
+
+
+@interface GRDispatchSetUpTest : GRTestCase
+@property BOOL setUpAsync;
+@end
+
+@implementation GRDispatchSetUpTest
+
+- (void)setUp:(dispatch_block_t)completion {
+  dispatch_queue_t queue = dispatch_queue_create("GRDispatchSetUpTest", NULL);
+  dispatch_async(queue, ^{
+    _setUpAsync = YES;
+    completion();
+  });
+}
+
+- (void)tearDown:(dispatch_block_t)completion {
+  dispatch_queue_t queue = dispatch_queue_create("GRDispatchSetUpTest", NULL);
+  dispatch_async(queue, ^{
+    completion();
+  });
+}
+
+- (void)testSetUpAsync {
+  GRAssertTrue(_setUpAsync);
 }
 
 @end

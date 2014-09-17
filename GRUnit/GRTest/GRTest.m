@@ -166,30 +166,6 @@ BOOL GRTestStatusEnded(GRTestStatus status) {
   [_delegate testDidUpdate:self source:self];
 }
 
-- (void)setUpClass {
-  // Set up class
-  @try {    
-    if ([_target respondsToSelector:@selector(setUpClass)]) {
-      [_target setUpClass];
-    }
-  } @catch(NSException *exception) {
-    // If we fail in the setUpClass, then we will cancel all the child tests (below)
-    _exception = exception;
-    _status = GRTestStatusErrored;
-  }
-}
-
-- (void)tearDownClass {
-  // Tear down class
-  @try {
-    if ([_target respondsToSelector:@selector(tearDownClass)])    
-      [_target tearDownClass];
-  } @catch(NSException *exception) {          
-    if (!_exception) _exception = exception;
-    _status = GRTestStatusErrored;
-  }
-}
-
 - (void)_didRunWithException:(NSException *)exception interval:(NSTimeInterval)interval completion:(GRTestCompletionBlock)completion {
   _exception = exception;
   _interval = interval;
@@ -229,39 +205,68 @@ BOOL GRTestStatusEnded(GRTestStatus status) {
 
   _exception = nil;
   
-  NSMethodSignature *signature = [_target methodSignatureForSelector:_selector];
-  
   if ([_target respondsToSelector:@selector(setCurrentSelector:)]) {
     [_target setCurrentSelector:_selector];
   }
   
-  if ([signature numberOfArguments] == 2) {
-    NSException *exception = nil;
-    NSTimeInterval interval = 0;
-    [GRTesting runTestWithTarget:_target selector:_selector exception:&exception interval:&interval];
+  [self runTest:^(NSException *exception, NSTimeInterval interval) {
     [self _didRunWithException:exception interval:interval completion:completion];
-  } else {
-    [self runTest:^(NSException *exception, NSTimeInterval interval) {
-      [self _didRunWithException:exception interval:interval completion:completion];
-    }];
+  }];
+}
+
+- (void)_setUp:(dispatch_block_t)afterSetup completion:(void (^)(NSException *exception, NSTimeInterval interval))completion {
+  @try {
+    // Private setUp internal to GRUnit (in case subclasses fail to call super)
+    if ([_target respondsToSelector:@selector(_setUp)]) {
+      [_target _setUp];
+    }
+    
+    if ([_target respondsToSelector:@selector(setUp)]) {
+      [_target setUp];
+    }
+    
+    if ([_target respondsToSelector:@selector(setUp:)]) {
+      [_target setUp:afterSetup];
+    } else {
+      afterSetup();
+    }
+  } @catch(NSException *e) {
+    completion(nil, 0);
+    return;
+  }
+}
+
+- (void)_tearDown:(void (^)(NSException *exception))completion {
+  @try {
+    if ([_target respondsToSelector:@selector(tearDown)]) {
+      [_target performSelector:@selector(tearDown)];
+    }
+    
+    // Private tearDown internal to GRUnit (in case subclasses fail to call super)
+    if ([_target respondsToSelector:@selector(_tearDown)]) {
+      [_target performSelector:@selector(_tearDown)];
+    }
+    
+    if ([_target respondsToSelector:@selector(tearDown:)]) {
+      [_target tearDown:^{
+        completion(nil);
+      }];
+    } else {
+      completion(nil);
+    }
+  } @catch(NSException *e) {
+    completion(e);
   }
 }
 
 - (void)runTest:(void (^)(NSException *exception, NSTimeInterval interval))completion {
-  @try {
-    // Private setUp internal to GRUnit (in case subclasses fail to call super)
-    if ([_target respondsToSelector:@selector(_setUp)]) {
-      [_target performSelector:@selector(_setUp)];
-    }
-    
-    if ([_target respondsToSelector:@selector(setUp)]) {
-      [_target performSelector:@selector(setUp)];
-    }
-  } @catch(NSException *e) {
-    completion(e, 0);
-    return;
-  }
-  
+  __weak GRTest *blockSelf = self;
+  [self _setUp:^{
+    [blockSelf _runTest:completion];
+  } completion:completion];
+}
+
+- (void)_runTest:(void (^)(NSException *exception, NSTimeInterval interval))completion {
   NSDate *startDate = [NSDate date];
   
   @try {
@@ -269,24 +274,19 @@ BOOL GRTestStatusEnded(GRTestStatus status) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
     
-    [_target performSelector:_selector withObject:^() {
-      NSException *exception = nil;
-      @try {
-        if ([_target respondsToSelector:@selector(tearDown)]) {
-          [_target performSelector:@selector(tearDown)];
-        }
-        
-        // Private tearDown internal to GRUnit (in case subclasses fail to call super)
-        if ([_target respondsToSelector:@selector(_tearDown)]) {
-          [_target performSelector:@selector(_tearDown)];
-        }
-      } @catch(NSException *tearDownException) {
-        exception = tearDownException;
-      }
-      
-      completion(exception, [[NSDate date] timeIntervalSinceDate:startDate]);
-    }];
-    
+    NSMethodSignature *signature = [_target methodSignatureForSelector:_selector];
+    if ([signature numberOfArguments] == 2) {
+      [_target performSelector:_selector];
+      [self _tearDown:^(NSException *e) {
+        completion(e, [[NSDate date] timeIntervalSinceDate:startDate]);
+      }];
+    } else {
+      [_target performSelector:_selector withObject:^() {
+        [self _tearDown:^(NSException *e) {
+          completion(e, [[NSDate date] timeIntervalSinceDate:startDate]);
+        }];
+      }];
+    }
 #pragma clang diagnostic pop
     
   } @catch(NSException *e) {

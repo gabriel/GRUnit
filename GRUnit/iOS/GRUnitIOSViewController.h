@@ -30,11 +30,12 @@
 #import "GRUnitIOSView.h"
 
 #import "GRUnitIOSTableViewDataSource.h"
+#import "GRUnitIOSTestViewController.h"
 
 /*
  Main view controller for the iOS test application.
  */
-@interface GRUnitIOSViewController : UIViewController <UITableViewDelegate, GRTestRunnerDelegate, UISearchBarDelegate>
+@interface GRUnitIOSViewController : UIViewController <UITableViewDelegate, GRTestRunnerDelegate, UISearchBarDelegate, GRUnitIOSTestViewControllerDelegate>
 
 @property GRTestSuite *suite;
 

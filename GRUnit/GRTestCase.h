@@ -103,8 +103,13 @@
 //! Run before each test method
 - (void)setUp;
 
+//! Set up async
+- (void)setUp:(dispatch_block_t)completion;
+
 //! Run after each test method
 - (void)tearDown;
+
+- (void)tearDown:(dispatch_block_t)completion;
 
 /*! 
  By default exceptions are raised, causing a test failure

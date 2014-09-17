@@ -200,7 +200,6 @@
 @end
 
 @interface  GRTestNode ()
-@property id<GRTest> test;
 @property NSMutableArray */*of GRTestNode*/children;
 @property NSMutableArray */* of GRTestNode*/filteredChildNodes;
 @end

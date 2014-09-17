@@ -155,7 +155,7 @@ typedef NS_ENUM (NSInteger, GRTestNodeFilter) {
 
 @interface GRTestNode : NSObject
 
-@property (readonly) id<GRTest> test;
+@property id<GRTest> test;
 @property (weak) id<GRTestNodeDelegate> delegate;
 @property (nonatomic) GRTestNodeFilter filter;
 @property (nonatomic) NSString *textFilter;

@@ -112,6 +112,25 @@ $ grunit sync -n ProjectName
   }
 }
 
+// Runs before each test
+- (void)setUp {
+}
+
+// Runs before each test (async)
+- (void)setUp:(dispatch_block_t)completion {
+  completion();
+}
+
+// Runs after each test
+- (void)tearDown {
+}
+
+// Runs after each test (async)
+- (void)tearDown:(dispatch_block_t)completion {
+  completion();
+}
+
+
 @end
 ```
 

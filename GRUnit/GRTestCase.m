@@ -45,6 +45,14 @@
 
 - (void)tearDown { }
 
+- (void)setUp:(dispatch_block_t)completion {
+  completion();
+}
+
+- (void)tearDown:(dispatch_block_t)completion {
+  completion();
+}
+
 - (void)_tearDown {
   _cancelling = NO;
 }

@@ -29,8 +29,6 @@
 
 #import "GRUnitIOSViewController.h"
 
-#import "GRUnitIOSTestViewController.h"
-
 NSString *const GRUnitTextFilterKey = @"TextFilter";
 NSString *const GRUnitFilterKey = @"Filter";
 
@@ -89,7 +87,13 @@ NSString *const GRUnitFilterKey = @"Filter";
 - (void)reload {
   [self.dataSource.root setTextFilter:[self _textFilter]];  
   [self.dataSource.root setFilter:[self _filterIndex]];
-  [_contentView.tableView reloadData]; 
+  [_contentView.tableView reloadData];
+  
+  NSString *testNodeId = [[NSUserDefaults standardUserDefaults] objectForKey:GRUnitTestNodeKey];
+  GRTestNode *testNode = [self.dataSource nodeForId:testNodeId];
+  if (testNode) {
+    [self pushTestNode:testNode animated:NO];
+  }
 }
 
 #pragma mark Running
@@ -137,6 +141,13 @@ NSString *const GRUnitFilterKey = @"Filter";
 
 - (NSInteger)_filterIndex {
   return [[[NSUserDefaults standardUserDefaults] objectForKey:GRUnitFilterKey] integerValue];
+}
+
+- (void)pushTestNode:(GRTestNode *)testNode animated:(BOOL)animated {
+  _testViewController = [[GRUnitIOSTestViewController alloc] init];
+  _testViewController.delegate = self;
+  [_testViewController setTestNode:testNode runnerDelegate:self];
+  [self.navigationController pushViewController:_testViewController animated:animated];
 }
 
 #pragma mark -
@@ -197,10 +208,7 @@ NSString *const GRUnitFilterKey = @"Filter";
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     GRTestNode *sectionNode = [[_dataSource root] filteredChildren][indexPath.section];
     GRTestNode *testNode = [sectionNode filteredChildren][indexPath.row];
-    
-    _testViewController = [[GRUnitIOSTestViewController alloc] init];
-    [_testViewController setTest:testNode.test runnerDelegate:self];
-    [self.navigationController pushViewController:_testViewController animated:YES];
+    [self pushTestNode:testNode animated:YES];
   }
 }
 
@@ -272,6 +280,13 @@ NSString *const GRUnitFilterKey = @"Filter";
     NSLog(@"Exiting (GRUNIT_AUTOEXIT)");
     exit((int)runner.test.stats.failureCount);
   }
+}
+
+#pragma mark -
+
+- (void)testViewController:(GRUnitIOSTestViewController *)testViewController didUpdateTestNode:(GRTestNode *)testNode {
+  //GRTestNode *existingTestNode = [self.dataSource nodeForId:testNode.identifier];
+  [self reloadTest:testNode.test];
 }
 
 #pragma mark Delegates (UISearchBar)

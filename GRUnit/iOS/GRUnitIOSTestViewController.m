@@ -31,12 +31,12 @@
 
 #import "GRUnitIOSTestView.h"
 
+NSString *const GRUnitTestNodeKey = @"TestNode";
+
 @interface GRUnitIOSTestViewController ()
 @property GRUnitIOSTestView *testView;
 @property GRTestNode *testNode;
-
 @property GRTestRunner *runner;
-@property id<GRTest> test;
 @end
 
 @implementation GRUnitIOSTestViewController
@@ -49,6 +49,17 @@
   return self;
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+  [super viewWillAppear:animated];
+  [[NSUserDefaults standardUserDefaults] setObject:_test.identifier forKey:GRUnitTestNodeKey];
+  [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+  [super viewWillDisappear:animated];
+  [[NSUserDefaults standardUserDefaults] removeObjectForKey:GRUnitTestNodeKey];
+  [[NSUserDefaults standardUserDefaults] synchronize];
+}
 
 - (void)loadView {
   _testView = [[GRUnitIOSTestView alloc] init];
@@ -92,8 +103,11 @@
 - (void)didFinishTest:(id<GRTest>)test {
   self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Re-run" style:UIBarButtonItemStyleDone target:self action:@selector(_runTest)];
   
-  _testNode = [GRTestNode nodeWithTest:test children:nil source:nil];
+  _testNode.test = test;
+  //_testNode = [GRTestNode nodeWithTest:test children:nil source:nil];
   [self log:[self statusDescription]];
+  
+  [self.delegate testViewController:self didUpdateTestNode:_testNode];
 }
 
 - (NSString *)statusDescription {
@@ -113,14 +127,13 @@
   return text;
 }
 
-- (void)setTest:(id<GRTest>)test runnerDelegate:(id<GRTestRunnerDelegate>)runnerDelegate {
-  _test = test;
+- (void)setTestNode:(GRTestNode *)testNode runnerDelegate:(id<GRTestRunnerDelegate>)runnerDelegate {
+  _testNode = testNode;
   _runnerDelegate = runnerDelegate;
   
   [self view];
-  self.title = [test name];
+  self.title = [_testNode.test name];
 
-  _testNode = [GRTestNode nodeWithTest:test children:nil source:nil];
   [self updateTestView];
 }
 

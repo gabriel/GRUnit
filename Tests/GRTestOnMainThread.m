@@ -27,14 +27,6 @@ static BOOL gGRTestOnMainThreadRunning = NO;
   GRAssertTrue([NSThread isMainThread]);
 }
 
-- (void)setUpClass {
-  GRAssertTrue([NSThread isMainThread]);
-}
-
-- (void)tearDownClass {
-  GRAssertTrue([NSThread isMainThread]);
-}
-
 - (void)testFail {
   GRAssertThrows({
     GRAssertTrue([NSThread isMainThread]);

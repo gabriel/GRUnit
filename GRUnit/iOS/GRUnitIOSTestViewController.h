@@ -30,6 +30,14 @@
 #import <UIKit/UIKit.h>
 #import "GRTestViewModel.h"
 
+extern NSString *const GRUnitTestNodeKey;
+
+@class GRUnitIOSTestViewController;
+
+@protocol GRUnitIOSTestViewControllerDelegate
+- (void)testViewController:(GRUnitIOSTestViewController *)testViewController didUpdateTestNode:(GRTestNode *)testNode;
+@end
+
 /*
  View controller for a test.
  */
@@ -37,9 +45,10 @@
 
 @property (readonly) id<GRTest> test;
 @property (weak) id<GRTestRunnerDelegate> runnerDelegate;
+@property (weak) id<GRUnitIOSTestViewControllerDelegate> delegate;
 
 - (void)log:(NSString *)text;
 
-- (void)setTest:(id<GRTest>)test runnerDelegate:(id<GRTestRunnerDelegate>)runnerDelegate;
+- (void)setTestNode:(GRTestNode *)testNode runnerDelegate:(id<GRTestRunnerDelegate>)runnerDelegate;
 
 @end
