@@ -31,7 +31,6 @@
 		00AEEEE9199323D300D9A741 /* GRDispatchTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 00AEEEDE199323D300D9A741 /* GRDispatchTest.m */; };
 		00AEEEEA199323D300D9A741 /* GRSlowTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 00AEEEDF199323D300D9A741 /* GRSlowTest.m */; };
 		00AEEEEB199323D300D9A741 /* GRTestEmpty.m in Sources */ = {isa = PBXBuildFile; fileRef = 00AEEEE0199323D300D9A741 /* GRTestEmpty.m */; };
-		00AEEEEC199323D300D9A741 /* GRTestException.m in Sources */ = {isa = PBXBuildFile; fileRef = 00AEEEE1199323D300D9A741 /* GRTestException.m */; };
 		00AEEEED199323D300D9A741 /* GRTestFail.m in Sources */ = {isa = PBXBuildFile; fileRef = 00AEEEE2199323D300D9A741 /* GRTestFail.m */; };
 		00AEEEEE199323D300D9A741 /* GRTestLogTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 00AEEEE3199323D300D9A741 /* GRTestLogTest.m */; };
 		00AEEEEF199323D300D9A741 /* GRTestMacrosTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 00AEEEE4199323D300D9A741 /* GRTestMacrosTest.m */; };
@@ -134,7 +133,6 @@
 		00AEEEDE199323D300D9A741 /* GRDispatchTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GRDispatchTest.m; path = Tests/GRDispatchTest.m; sourceTree = "<group>"; };
 		00AEEEDF199323D300D9A741 /* GRSlowTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GRSlowTest.m; path = Tests/GRSlowTest.m; sourceTree = "<group>"; };
 		00AEEEE0199323D300D9A741 /* GRTestEmpty.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GRTestEmpty.m; path = Tests/GRTestEmpty.m; sourceTree = "<group>"; };
-		00AEEEE1199323D300D9A741 /* GRTestException.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GRTestException.m; path = Tests/GRTestException.m; sourceTree = "<group>"; };
 		00AEEEE2199323D300D9A741 /* GRTestFail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GRTestFail.m; path = Tests/GRTestFail.m; sourceTree = "<group>"; };
 		00AEEEE3199323D300D9A741 /* GRTestLogTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GRTestLogTest.m; path = Tests/GRTestLogTest.m; sourceTree = "<group>"; };
 		00AEEEE4199323D300D9A741 /* GRTestMacrosTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GRTestMacrosTest.m; path = Tests/GRTestMacrosTest.m; sourceTree = "<group>"; };
@@ -342,7 +340,6 @@
 				00AEEEDE199323D300D9A741 /* GRDispatchTest.m */,
 				00AEEEDF199323D300D9A741 /* GRSlowTest.m */,
 				00AEEEE0199323D300D9A741 /* GRTestEmpty.m */,
-				00AEEEE1199323D300D9A741 /* GRTestException.m */,
 				00AEEEE2199323D300D9A741 /* GRTestFail.m */,
 				00AEEEE3199323D300D9A741 /* GRTestLogTest.m */,
 				00AEEEE4199323D300D9A741 /* GRTestMacrosTest.m */,
@@ -590,7 +587,6 @@
 				00AEEEF0199323D300D9A741 /* GRTestOnMainThread.m in Sources */,
 				B5C271A4A0064D3AB0A02C64 /* main.m in Sources */,
 				00AEEEEF199323D300D9A741 /* GRTestMacrosTest.m in Sources */,
-				00AEEEEC199323D300D9A741 /* GRTestException.m in Sources */,
 				0007D3BF199C7253008EF782 /* GRKiwiTest.m in Sources */,
 				00AEEEEA199323D300D9A741 /* GRSlowTest.m in Sources */,
 				CF84D44CC129436D96277332 /* GRTestViewModel.m in Sources */,

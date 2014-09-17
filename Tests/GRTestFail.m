@@ -14,9 +14,7 @@
 @implementation GRTestFail
 
 - (void)testFail {
-  GRAssertThrows({
-    GRFail(@"Test failure");
-  });
+  GRFail(@"Test failure");
 }
 
 - (void)testSucceedAfterFail {

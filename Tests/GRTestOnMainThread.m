@@ -28,10 +28,8 @@ static BOOL gGRTestOnMainThreadRunning = NO;
 }
 
 - (void)testFail {
-  GRAssertThrows({
-    GRAssertTrue([NSThread isMainThread]);
-    GRFail(@"Test failure");
-  });
+  GRAssertTrue([NSThread isMainThread]);
+  GRFail(@"Test failure");
 }
 
 - (void)testSucceedAfterFail {

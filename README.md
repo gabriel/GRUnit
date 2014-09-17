@@ -159,8 +159,10 @@ https://developer.apple.com/library/ios/recipes/xcode_help-breakpoint_navigator/
 ## Test Macros
 
 ```
-GRAssertNoErr(a1)
-GRAssertErr(a1, a2)
+GRAssertNil(a1)
+GRAssertNotNil(a1)
+GRAssertTrue(expr)
+GRAssertFalse(expr)
 GRAssertNotNULL(a1)
 GRAssertNULL(a1)
 GRAssertNotEquals(a1, a2)
@@ -179,18 +181,8 @@ GRAssertEquals(a1, a2)
 GHAbsoluteDifference(left,right) (MAX(left,right)-MIN(left,right))
 GRAssertEqualsWithAccuracy(a1, a2, accuracy)
 GRFail(description, ...)
-GRAssertNil(a1)
-GRAssertNotNil(a1)
-GRAssertTrue(expr)
-GRAssertTrueNoThrow(expr)
-GRAssertFalse(expr)
-GRAssertFalseNoThrow(expr)
-GRAssertThrows(expr)
-GRAssertThrowsSpecific(expr, specificException)
-GRAssertThrowsSpecificNamed(expr, specificException, aName)
-GRAssertNoThrow(expr)
-GRAssertNoThrowSpecific(expr, specificException)
-GRAssertNoThrowSpecificNamed(expr, specificException, aName)
+GRAssertNoErr(a1)
+GRAssertErr(a1, a2)
 ```
 
 ### Example Project

@@ -194,7 +194,7 @@
   if (groupCompletion) groupCompletion(self);
 }
 
-- (void)_nextTest:(NSInteger)index groupCompletion:(GRTestCompletionBlock)groupCompletion {
+- (void)_nextTest:(NSInteger)index queue:(dispatch_queue_t)queue groupCompletion:(GRTestCompletionBlock)groupCompletion {
   if (index >= [_children count] || _status == GRTestStatusCancelling) {
     [self _testDidEnd:groupCompletion];
     return;
@@ -203,13 +203,15 @@
   id<GRTest> test = _children[index];
   GRTestGroup *blockSelf __weak = self;
   GRTestCompletionBlock testCompletion = ^(id<GRTest> test) {
-    [blockSelf _nextTest:index+1 groupCompletion:groupCompletion];
+    dispatch_async(queue, ^{
+      [blockSelf _nextTest:index+1 queue:queue groupCompletion:groupCompletion];
+    });
   };
   
-  [test run:testCompletion];  
+  [test run:queue completion:testCompletion];
 }
 
-- (void)_run:(GRTestCompletionBlock)groupCompletion {
+- (void)_run:(dispatch_queue_t)queue completion:(GRTestCompletionBlock)groupCompletion {
 //  NSInteger enabledCount = ([_children count] - [self disabledCount]);
 //  if (_status == GRTestStatusCancelled || enabledCount <= 0) {
 //    return;
@@ -217,27 +219,21 @@
   _status = GRTestStatusRunning;
   [_delegate testDidStart:self source:self];
   
-  [self _nextTest:0 groupCompletion:groupCompletion];
+  [self _nextTest:0 queue:queue groupCompletion:groupCompletion];
 }
 
-- (void)run:(GRTestCompletionBlock)completion {
+- (void)run:(dispatch_queue_t)queue completion:(GRTestCompletionBlock)completion {
   [self _reset];
   
-  BOOL shouldRunOnMainThread = NO;
-  
   // Run on main thread (and wait) if the test case wants it
-  if ([_testCase respondsToSelector:@selector(shouldRunOnMainThread)]) {
-    shouldRunOnMainThread = [_testCase shouldRunOnMainThread];
+  if ([_testCase respondsToSelector:@selector(shouldRunOnMainThread)] && [_testCase shouldRunOnMainThread]) {
+    queue = dispatch_get_main_queue();
   }
     
-  if (shouldRunOnMainThread) {
-    GRTestGroup *blockSelf __weak = self;
-    dispatch_sync(dispatch_get_main_queue(), ^{
-      [blockSelf _run:completion];
-    });
-  } else {
-    [self _run:completion];
-  }
+  GRTestGroup *blockSelf __weak = self;
+  dispatch_async(queue, ^{
+    [blockSelf _run:queue completion:completion];
+  });
 }
 
 #pragma mark Delegates (GRTestDelegate)

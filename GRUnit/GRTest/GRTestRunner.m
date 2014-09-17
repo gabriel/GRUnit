@@ -55,7 +55,6 @@
 @interface GRTestRunner ()
 @property NSTimeInterval startInterval;
 @property dispatch_queue_t queue;
-@property dispatch_group_t group;
 @end
 
 @implementation GRTestRunner
@@ -116,15 +115,12 @@
   } else {
     _queue = dispatch_queue_create("GRUnit", 0);
   }
-  _group = dispatch_group_create();
-  
-  dispatch_group_async(_group, _queue, ^{
-    [_test run:^(id<GRTest> test) {
-      dispatch_async(dispatch_get_main_queue(), ^{
-        if (completion) completion(test);
-      });
-    }];
-  });
+
+  [_test run:_queue completion:^(id<GRTest> test) {
+    dispatch_async(dispatch_get_main_queue(), ^{
+      if (completion) completion(test);
+    });
+  }];
   return YES;
 }
 
@@ -151,6 +147,13 @@
   dispatch_async(dispatch_get_main_queue(), block);
 }
 
+- (void)syncMain {
+  if (![NSThread isMainThread]) {
+    // Force main queue to finish
+    dispatch_sync(dispatch_get_main_queue(), ^{});
+  }
+}
+
 #pragma mark Delegates (GRTest)
 
 - (void)testDidStart:(id<GRTest>)test source:(id<GRTest>)source {
@@ -163,6 +166,8 @@
     if ([blockSelf.delegate respondsToSelector:@selector(testRunner:didStartTest:)])
     [blockSelf.delegate testRunner:self didStartTest:source]; 
   }];
+  
+  [self syncMain];
 }
 
 - (void)testDidUpdate:(id<GRTest>)test source:(id<GRTest>)source {
@@ -171,6 +176,8 @@
     if ([blockSelf.delegate respondsToSelector:@selector(testRunner:didUpdateTest:)])
       [blockSelf.delegate testRunner:self didUpdateTest:source];  
   }];
+  
+  [self syncMain];
 }
 
 - (void)testDidEnd:(id<GRTest>)test source:(id<GRTest>)source { 
@@ -197,7 +204,9 @@
   } else if (_test == source && [source status] != GRTestStatusCancelled) {
     // If the test associated with this runner ended then notify
     [self _notifyFinished];
-  } 
+  }
+  
+  [self syncMain];
 }
 
 - (void)test:(id<GRTest>)test didLog:(NSString *)message source:(id<GRTest>)source {
@@ -207,6 +216,8 @@
     if ([blockSelf.delegate respondsToSelector:@selector(testRunner:test:didLog:)])
       [blockSelf.delegate testRunner:self test:source didLog:message];
   }];
+  
+  [self syncMain];
 }
 
 #pragma mark Notifications (Private)

@@ -191,7 +191,7 @@ BOOL GRTestStatusEnded(GRTestStatus status) {
   }
 }
 
-- (void)run:(GRTestCompletionBlock)completion {
+- (void)run:(dispatch_queue_t)queue completion:(GRTestCompletionBlock)completion {
   if (_status == GRTestStatusCancelled || _disabled || _hidden) {
     completion(self);
     return;

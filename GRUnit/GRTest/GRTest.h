@@ -138,9 +138,10 @@ typedef void (^GRTestCompletionBlock)(id<GRTest> test);
 
 /*!
  Run the test.
- @param options Options
+ @param queue Queue the test is running in
+ @param completion Completion block
  */
-- (void)run:(GRTestCompletionBlock)completion;
+- (void)run:(dispatch_queue_t)queue completion:(GRTestCompletionBlock)completion;
 
 /*!
  @result Messages logged during this test run
