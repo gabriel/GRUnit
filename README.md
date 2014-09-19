@@ -152,7 +152,7 @@ To have all your tests in a test case run on the main thread, implement `shouldR
 
 ## Exception Breakpoint
 
-You can set an exception breakpoint. If set, it will stop and breakpoint when an error first occurs.
+GRUnit works best with an exception breakpoint. So your test run will breakpoint if an error occurs allowing you to interact with the debugger.
 
 https://developer.apple.com/library/ios/recipes/xcode_help-breakpoint_navigator/articles/adding_an_exception_breakpoint.html
 
@@ -210,6 +210,8 @@ $ brew install ios-sim
 ```
 
 Now you can run tests from the command line:
+
+This doesn't work right...
 
 ```xml
 $ grunit run -n ProjectName

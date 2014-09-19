@@ -111,13 +111,6 @@
 
 - (void)tearDown:(dispatch_block_t)completion;
 
-/*! 
- By default exceptions are raised, causing a test failure
-
- @param exception Exception that was raised by test
- */
-- (void)failWithException:(NSException*)exception;
-
 /*!
  Log a message, which notifies the log delegate.
  This is not meant to be used directly, see GRTestLog(...) macro.

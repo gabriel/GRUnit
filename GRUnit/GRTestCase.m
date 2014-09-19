@@ -32,11 +32,6 @@
 
 @implementation GRTestCase
 
-- (void)failWithException:(NSException *)exception {
-  NSLog(@"%@", [GRTesting descriptionForException:exception]);
-  [exception raise];
-}
-
 - (BOOL)shouldRunOnMainThread {
   return NO;
 }
