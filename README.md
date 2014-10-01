@@ -156,6 +156,8 @@ GRUnit works best with an exception breakpoint. So your test run will breakpoint
 
 https://developer.apple.com/library/ios/recipes/xcode_help-breakpoint_navigator/articles/adding_an_exception_breakpoint.html
 
+When adding the exception breakpoint, you change the action to `Debugger Command` of `po $eax` so it logs the exception to the console automatically.
+
 ## Test Macros
 
 ```
