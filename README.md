@@ -2,7 +2,10 @@
 
 GRUnit is a test framework for iOS which runs as a Test (app) target in your project. Its meant to be very similar to XCTest and supports asynchronous testing. By default, it is meant to breakpoint on test failure, for easier debugging.
 
-![GRUnit-1.0.1](https://raw.githubusercontent.com/gabriel/GRUnit/master/GRUnit-1.0.1.png)
+
+
+![GRUnit-1.0.1a](https://raw.githubusercontent.com/gabriel/GRUnit/master/GRUnit-1.0.1a.png)
+![GRUnit-1.0.1b](https://raw.githubusercontent.com/gabriel/GRUnit/master/GRUnit-1.0.1b.png)
 
 Projects using GRUnit:
 
