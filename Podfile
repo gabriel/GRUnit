@@ -1,9 +1,8 @@
 platform :ios, "7.0"
+platform :osx, "10.8"
 
-pod "GHKit"
+pod "GHKit", :path => "../gh-kit"
 
 target :Tests do
-  pod "GHKit"
-  #pod "Kiwi"
-  #pod "GRUnit", :path => "."
+  pod "GHKit", :path => "../gh-kit"
 end

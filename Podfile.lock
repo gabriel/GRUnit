@@ -1,10 +1,14 @@
 PODS:
-  - GHKit (1.0.5)
+  - GHKit (1.0.12)
 
 DEPENDENCIES:
-  - GHKit
+  - GHKit (from `../gh-kit`)
+
+EXTERNAL SOURCES:
+  GHKit:
+    :path: ../gh-kit
 
 SPEC CHECKSUMS:
-  GHKit: 737b2d495cd7f389194e2798e219c5688ded7fce
+  GHKit: 190298d505e6d76bd7e8e49dbc4762da73a11ec1
 
-COCOAPODS: 0.33.1
+COCOAPODS: 0.35.0

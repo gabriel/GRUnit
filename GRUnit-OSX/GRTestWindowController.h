@@ -1,8 +1,8 @@
 //
-//  GRUnit.h
-//  GRUnit
+//  GRTestWindowController.h
+//  GHKit
 //
-//  Created by Gabriel Handford on 1/19/09.
+//  Created by Gabriel Handford on 1/17/09.
 //  Copyright 2009. All rights reserved.
 //
 //  Permission is hereby granted, free of charge, to any person
@@ -27,18 +27,15 @@
 //  OTHER DEALINGS IN THE SOFTWARE.
 //
 
-#import "GRTestCase.h"
-#import "GRTestSuite.h"
-#import "GRTestMacros.h"
-#import "GRTestRunner.h"
-#import "GRTest.h"
-#import "GRTesting.h"
-#import "GRTestGroup.h"
-#import "NSException+GRTestFailureExceptions.h"
-#import "NSValue+GRValueFormatter.h"
+#import "GRTestViewController.h"
 
-#ifdef __IPHONE_OS_VERSION_MIN_REQUIRED
-#import "GRUnitIOSAppDelegate.h"
-#endif
+@interface GRTestWindowController : NSWindowController {
+	GRTestViewController *viewController_;
+}
 
+@property (strong, nonatomic) IBOutlet GRTestViewController *viewController;
 
+- (IBAction)runTests:(id)sender;
+- (IBAction)copy:(id)sender;
+
+@end

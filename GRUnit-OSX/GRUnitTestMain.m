@@ -1,8 +1,8 @@
 //
-//  GRUnit.h
-//  GRUnit
+//  GHUnitTestMain.m
+//  GHUnit
 //
-//  Created by Gabriel Handford on 1/19/09.
+//  Created by Gabriel Handford on 2/22/09.
 //  Copyright 2009. All rights reserved.
 //
 //  Permission is hereby granted, free of charge, to any person
@@ -27,18 +27,33 @@
 //  OTHER DEALINGS IN THE SOFTWARE.
 //
 
-#import "GRTestCase.h"
-#import "GRTestSuite.h"
-#import "GRTestMacros.h"
-#import "GRTestRunner.h"
-#import "GRTest.h"
-#import "GRTesting.h"
-#import "GRTestGroup.h"
-#import "NSException+GRTestFailureExceptions.h"
-#import "NSValue+GRValueFormatter.h"
+#import <Foundation/Foundation.h>
 
-#ifdef __IPHONE_OS_VERSION_MIN_REQUIRED
-#import "GRUnitIOSAppDelegate.h"
-#endif
+#import "GRUnit.h"
+#import "GRTestApp.h"
 
-
+int main(int argc, char *argv[]) {
+  @autoreleasepool {
+  
+  // Register any special test case classes
+  //[[GRTesting sharedInstance] registerClassName:@"GHSpecialTestCase"];  
+  
+    int retVal = 0;
+    // If GHUNIT_CLI is set we are using the command line interface and run the tests
+    // Otherwise load the GUI app
+    if (getenv("GHUNIT_CLI")) {
+      GRTestRunner *runner = [GRTestRunner runnerFromEnv];
+      [runner run:^(id<GRTest> test){}];
+    } else {
+      // To run all tests (from ENV)
+      [[GRTestApp alloc] init];
+      // To run a different test suite:
+      //GRTestSuite *suite = [GRTestSuite suiteWithTestFilter:@"GHSlowTest,GHAsyncTestCaseTest"];
+      //GRTestApp *app = [[GRTestApp alloc] initWithSuite:suite];
+      // Or set global:
+      //GHUnitTest = @"GHSlowTest";
+      [NSApp run];
+    }
+    return retVal;
+  }
+}
