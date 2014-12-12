@@ -1,5 +1,4 @@
 require 'xcodeproj'
-require 'xcodeproj/ext'
 require 'fileutils'
 require 'logger'
 require 'colorize'
@@ -152,8 +151,9 @@ class GRUnit::Project
       logger.debug "Test target already exists, skipping..."
     end
 
-    # Get main target prefix header
-    prefix_header = main_target.build_settings("Debug")["GCC_PREFIX_HEADER"]
+    # Get main target prefix header    
+    debug_settings = main_target.build_settings("Debug")
+    prefix_header = debug_settings["GCC_PREFIX_HEADER"] if debug_settings
 
     # Clear default OTHER_LDFLAGS (otherwise CocoaPods gives a warning)
     test_target.build_configurations.each do |c|

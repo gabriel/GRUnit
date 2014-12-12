@@ -1,6 +1,6 @@
 //
-//  GHUnitTestMain.m
-//  GHUnit
+//  GRUnitTestMain.m
+//  GRUnit
 //
 //  Created by Gabriel Handford on 2/22/09.
 //  Copyright 2009. All rights reserved.
