@@ -8,16 +8,9 @@
 
 #import "GRTestWindowController.h"
 
-@interface GRTestApp : NSObject {
-	NSMutableArray *topLevelObjects_;
-	
-	GRTestWindowController *windowController_;
-	
-	GRTestSuite *suite_;
-}
+@interface GRTestApp : NSObject
 
 - (id)initWithSuite:(GRTestSuite *)suite;
-
 - (void)runTests;
 
 @end
