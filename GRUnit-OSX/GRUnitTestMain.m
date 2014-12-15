@@ -51,7 +51,7 @@ int main(int argc, char *argv[]) {
       //GRTestSuite *suite = [GRTestSuite suiteWithTestFilter:@"GHSlowTest,GHAsyncTestCaseTest"];
       //GRTestApp *app = [[GRTestApp alloc] initWithSuite:suite];
       // Or set global:
-      //GHUnitTest = @"GHSlowTest";
+      //GRUnitTest = @"GHSlowTest";
       [NSApp run];
     }
     return retVal;

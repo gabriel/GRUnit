@@ -1,6 +1,6 @@
 //
 //  GRTestOutlineViewModel.m
-//  GHUnit
+//  GRUnit
 //
 //  Created by Gabriel Handford on 7/17/09.
 //  Copyright 2009. All rights reserved.

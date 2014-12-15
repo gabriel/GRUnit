@@ -1,6 +1,6 @@
 //
 //  GRTestApp.h
-//  GHUnit
+//  GRUnit
 //
 //  Created by Gabriel Handford on 1/20/09.
 //  Copyright 2009. All rights reserved.

@@ -44,7 +44,7 @@
 	[viewController_ loadDefaults];	
 	self.window.contentView = viewController_.view;	
 	NSString *bundleVersion = [[NSBundle bundleForClass:[self class]] objectForInfoDictionaryKey:@"CFBundleVersion"];
-	self.window.title = [NSString stringWithFormat:@"GHUnit %@", bundleVersion];	
+	self.window.title = [NSString stringWithFormat:@"GRUnit %@", bundleVersion];	
   
   if (getenv("GHUNIT_AUTORUN")) [self runTests:nil];
 }
