@@ -1,6 +1,6 @@
 # GRUnit 
 
-GRUnit is a test framework for iOS which runs as a Test (app) target in your project. Its meant to be very similar to XCTest and supports asynchronous testing. By default, it is meant to breakpoint on test failure, for easier debugging.
+GRUnit is a test framework for iOS and OSX which runs as a Test (app) target in your project. It's meant to be very similar to XCTest and supports asynchronous testing with timeouts. By default, it is meant to raise an Exception on test failure, so you can use an exception breakpoint and debug in Xcode at the point of failure.
 
 
 
@@ -195,21 +195,15 @@ GRAssertErr(a1, a2)
 
 This project uses GRUnit. Open `GRUnit.xcworkspace` and run the Tests target.
 
-### Converting from GHUnit
+### Command Line
 
-1. Replace `#import <GHUnit/GHUnit.h>` with `#import <GRUnit/GRUnit.h>`
-1. Replace `GHTestCase` with `GRTestCase`
-1. Replace `GHAssert...` with `GRAssert...` and remove the description argument (usually nil).
-1. Replace `GHTestLog` with `GRTestLog`.
-1. Replace `GHUnitIOSAppDelegate` with `GRUnitIOSAppDelegate`.
-
-### Install Command Line
+Install:
 
 ```xml
 $ grunit install_cli -n ProjectName
 ```
 
-Install ios-sim using homebrew:
+Install ios-sim using homebrew (for iOS):
 
 ```xml
 $ brew install ios-sim
@@ -222,3 +216,11 @@ This doesn't work right...
 ```xml
 $ grunit run -n ProjectName
 ```
+
+### Converting from GHUnit
+
+1. Replace `#import <GHUnit/GHUnit.h>` with `#import <GRUnit/GRUnit.h>`
+1. Replace `GHTestCase` with `GRTestCase`
+1. Replace `GHAssert...` with `GRAssert...` and remove the description argument (usually nil).
+1. Replace `GHTestLog` with `GRTestLog`.
+1. Replace `GHUnitIOSAppDelegate` with `GRUnitIOSAppDelegate`.
