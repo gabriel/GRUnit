@@ -96,9 +96,14 @@
  */
 @interface GRTestCase : NSObject
 
-@property SEL currentSelector;
 @property (weak) id<GRTestCaseLogWriter> logWriter;
 @property (readonly, getter=isCancelling) BOOL cancelling;
+
+@property (readonly) id target;
+@property (readonly) SEL selector;
+
+@property NSTimeInterval timeout;
+
 
 //! Run before each test method
 - (void)setUp;
@@ -110,6 +115,11 @@
 - (void)tearDown;
 
 - (void)tearDown:(dispatch_block_t)completion;
+
+/*!
+ Sets the current target and selector.
+ */
+- (void)setCurrentTarget:(id)target selector:(SEL)selector;
 
 /*!
  Log a message, which notifies the log delegate.

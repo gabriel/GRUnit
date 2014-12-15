@@ -30,7 +30,17 @@
 #import "GRTestCase.h"
 #import "GRTesting.h"
 
+@interface GRTestCase ()
+@property id target;
+@property SEL selector;
+@end
+
 @implementation GRTestCase
+
+- (void)setCurrentTarget:(id)target selector:(SEL)selector {
+  _target = target;
+  _selector = selector;
+}
 
 - (BOOL)shouldRunOnMainThread {
   return NO;

@@ -42,6 +42,8 @@ typedef NS_ENUM (NSUInteger, GRTestStatus) {
   GRTestStatusErrored, //! Test finished and errored
 };
 
+extern NSString * const GRUnitTimeoutException;
+
 /*!
  Generate string from GRTestStatus
  @param status

@@ -117,6 +117,7 @@ $ grunit sync -n ProjectName
 
 // Runs before each test
 - (void)setUp {
+  self.timeout = 10; // Set timeout to 10 seconds for asynchronous tests (Default is 60 seconds)
 }
 
 // Runs before each test (async)

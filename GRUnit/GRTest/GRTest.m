@@ -27,12 +27,12 @@
 //  OTHER DEALINGS IN THE SOFTWARE.
 //
 
-//! @cond DEV
-
 #import "GRTest.h"
 
 #import "GRTesting.h"
 #import "GRTestCase.h"
+
+NSString * const GRUnitTimeoutException = @"GRUnitTimeoutException";
 
 NSString *NSStringFromGRTestStatus(GRTestStatus status) {
   switch(status) {
@@ -166,8 +166,8 @@ BOOL GRTestStatusEnded(GRTestStatus status) {
   [_delegate testDidUpdate:self source:self];
 }
 
-- (void)_didRunWithException:(NSException *)exception interval:(NSTimeInterval)interval completion:(GRTestCompletionBlock)completion {
-  _exception = exception;
+- (void)_didRunWithInterval:(NSTimeInterval)interval exception:(NSException *)exception completion:(GRTestCompletionBlock)completion {
+  _exception = exception; // nil if didn't error
   _interval = interval;
   
   [self _setLogWriter:nil];
@@ -186,8 +186,8 @@ BOOL GRTestStatusEnded(GRTestStatus status) {
   
   completion(self);
   
-  if ([_target respondsToSelector:@selector(setCurrentSelector:)]) {
-    [_target setCurrentSelector:NULL];
+  if ([_target respondsToSelector:@selector(setCurrentTarget:selector:)]) {
+    [_target setCurrentTarget:nil selector:NULL];
   }
 }
 
@@ -205,12 +205,12 @@ BOOL GRTestStatusEnded(GRTestStatus status) {
 
   _exception = nil;
   
-  if ([_target respondsToSelector:@selector(setCurrentSelector:)]) {
-    [_target setCurrentSelector:_selector];
+  if ([_target respondsToSelector:@selector(setCurrentTarget:selector:)]) {
+    [_target setCurrentTarget:_target selector:_selector];
   }
   
   [self runTest:^(NSException *exception, NSTimeInterval interval) {
-    [self _didRunWithException:exception interval:interval completion:completion];
+    [self _didRunWithInterval:interval exception:exception completion:completion];
   }];
 }
 
@@ -281,11 +281,22 @@ BOOL GRTestStatusEnded(GRTestStatus status) {
         completion(e, [[NSDate date] timeIntervalSinceDate:startDate]);
       }];
     } else {
+      NSTimeInterval timeout = 0;
+      if ([_target respondsToSelector:@selector(timeout)]) {
+        timeout = [_target timeout];
+      }
+      
+      // Run target with completion block (asynchronous)
       [_target performSelector:_selector withObject:^() {
         [self _tearDown:^(NSException *e) {
           completion(e, [[NSDate date] timeIntervalSinceDate:startDate]);
         }];
       }];
+      
+      if (![self wait:timeout]) {
+        NSException *e = [NSException exceptionWithName:GRUnitTimeoutException reason:@"Timed out" userInfo:@{}];
+        completion(e, [[NSDate date] timeIntervalSinceDate:startDate]);
+      }
     }
 #pragma clang diagnostic pop
     
@@ -331,6 +342,38 @@ BOOL GRTestStatusEnded(GRTestStatus status) {
   return [[GRTest allocWithZone:zone] initWithTarget:_target selector:_selector delegate:_delegate];
 }
 
-@end
+#pragma mark Run Loop
 
-//! @endcond
+- (BOOL)wait:(NSTimeInterval)timeout {
+  NSArray *runLoopModes = @[NSDefaultRunLoopMode, NSRunLoopCommonModes];
+  
+  if (timeout == 0) timeout = 60; // Default timeout seconds
+  
+  NSTimeInterval checkEveryInterval = 0.01; // TODO: Polling is slow
+  
+  NSDate *runUntilDate = [NSDate dateWithTimeIntervalSinceNow:timeout];
+  BOOL timedOut = NO;
+  NSUInteger runIndex = 0;
+  
+  while (!GRTestStatusEnded(_status)) {
+    NSString *mode = runLoopModes[runIndex++ % runLoopModes.count];
+    
+    @autoreleasepool {
+      if (!mode || ![NSRunLoop.currentRunLoop runMode:mode beforeDate:[NSDate dateWithTimeIntervalSinceNow:checkEveryInterval]]) {
+        // If there were no run loop sources or timers then we should sleep for the interval
+        [NSThread sleepForTimeInterval:checkEveryInterval];
+      }
+    }
+    
+    // If current date is after the run until date
+    if ([runUntilDate compare:[NSDate date]] == NSOrderedAscending) {
+      timedOut = YES;
+      break;
+    }
+  }
+  
+  return !timedOut;
+}
+
+
+@end
