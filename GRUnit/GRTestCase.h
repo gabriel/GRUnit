@@ -99,10 +99,7 @@
 @property (weak) id<GRTestCaseLogWriter> logWriter;
 @property (readonly, getter=isCancelling) BOOL cancelling;
 
-@property (readonly) id target;
-@property (readonly) SEL selector;
-
-@property NSTimeInterval timeout;
+@property id<GRTest> test;
 
 
 //! Run before each test method
@@ -115,11 +112,6 @@
 - (void)tearDown;
 
 - (void)tearDown:(dispatch_block_t)completion;
-
-/*!
- Sets the current target and selector.
- */
-- (void)setCurrentTarget:(id)target selector:(SEL)selector;
 
 /*!
  Log a message, which notifies the log delegate.
@@ -147,5 +139,10 @@
  @result Defaults to NO; YES if we should run this test case on the main thread (queue).
  */
 - (BOOL)shouldRunOnMainThread;
+
+/*!
+ Cycle run loop.
+ */
+- (void)wait:(NSTimeInterval)timeout;
 
 @end

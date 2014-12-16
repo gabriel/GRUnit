@@ -18,13 +18,7 @@
   GRAssertFalse([NSThread isMainThread]);
 }
 
-- (void)setUp {
-  self.timeout = 3;
-}
-
 - (void)testDispatchWait {
-  GRAssertEqualStrings(NSStringFromSelector([self selector]), @"testDispatchWait");
-  
   dispatch_queue_t queue = dispatch_queue_create("GHDispatchTest_testDispatchWait", NULL);
   dispatch_group_t group = dispatch_group_create();
   
@@ -35,22 +29,14 @@
   });
   
   dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
-  
-  GRAssertEqualStrings(NSStringFromSelector([self selector]), @"testDispatchWait");
 }
 
 - (void)testDispatchWithCompletion:(dispatch_block_t)completion {
-  
-  GRAssertEqualStrings(NSStringFromSelector([self selector]), @"testDispatchWithCompletion:");
-  
   dispatch_queue_t queue = dispatch_queue_create("GHDispatchTest_testDispatchWithCompletion", NULL);
   dispatch_async(queue, ^{
     GRTestLog(@"Test logging in dispatch queue before");
     [NSThread sleepForTimeInterval:2];
     GRTestLog(@"Test logging in dispatch queue after");
-    
-    //GRAssertEqualStrings(NSStringFromSelector([self selector]), @"testDispatchWithCompletion:");
-    
     completion();
   });
 }
@@ -62,11 +48,14 @@
   });
 }
 
-- (void)testDispatchTimeout:(dispatch_block_t)completion {
-  dispatch_queue_t queue = dispatch_queue_create("GHDispatchTest_testDispatchTimeout", NULL);
-  dispatch_async(queue, ^{
-    [NSThread sleepForTimeInterval:3.1];
-  });
+- (void)testRunLoop:(dispatch_block_t)completion {
+  completion();
+  [self wait:3];
+}
+
+
+- (void)testRunLoopsFail:(dispatch_block_t)completion {
+  [self wait:3];
 }
 
 @end

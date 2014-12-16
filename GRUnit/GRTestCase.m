@@ -30,17 +30,7 @@
 #import "GRTestCase.h"
 #import "GRTesting.h"
 
-@interface GRTestCase ()
-@property id target;
-@property SEL selector;
-@end
-
 @implementation GRTestCase
-
-- (void)setCurrentTarget:(id)target selector:(SEL)selector {
-  _target = target;
-  _selector = selector;
-}
 
 - (BOOL)shouldRunOnMainThread {
   return NO;
@@ -73,5 +63,40 @@
 - (void)cancel {
   _cancelling = YES;
 }
+
+- (void)wait:(NSTimeInterval)timeout {
+  NSArray *runLoopModes = @[NSDefaultRunLoopMode, NSRunLoopCommonModes];
+  
+  if (timeout == 0) timeout = 60; // Default timeout seconds
+  
+  NSTimeInterval checkEveryInterval = 0.01; // TODO: Polling is slow
+  
+  NSDate *runUntilDate = [NSDate dateWithTimeIntervalSinceNow:timeout];
+  BOOL timedOut = NO;
+  NSUInteger runIndex = 0;
+  
+  while (!GRTestStatusEnded(_test.status)) {
+    NSString *mode = runLoopModes[runIndex++ % runLoopModes.count];
+    
+    @autoreleasepool {
+      if (!mode || ![NSRunLoop.currentRunLoop runMode:mode beforeDate:[NSDate dateWithTimeIntervalSinceNow:checkEveryInterval]]) {
+        // If there were no run loop sources or timers then we should sleep for the interval
+        [NSThread sleepForTimeInterval:checkEveryInterval];
+      }
+    }
+    
+    // If current date is after the run until date
+    if ([runUntilDate compare:[NSDate date]] == NSOrderedAscending) {
+      timedOut = YES;
+      break;
+    }
+  }
+  
+  if (timedOut) {
+    NSException *e = [NSException exceptionWithName:GRUnitTimeoutException reason:@"Timed out" userInfo:@{}];
+    [e raise];
+  }
+}
+
 
 @end

@@ -108,6 +108,13 @@ $ grunit sync -n ProjectName
   });
 }
 
+- (void)testRunLoopsWithCompletion:(dispatch_block_t)completion {
+  // If you are using sockets attached to run loops, you need to 
+  // call wait which will run the default and common run loop modes
+
+  [self wait:10]; // Run loops until completion (or timeout after 10 seconds)
+}
+
 // For a long test, you can check cancel state and break/return
 - (void)testCancel {
   for (NSInteger i = 0; i < 123456789; i++) {
@@ -117,7 +124,6 @@ $ grunit sync -n ProjectName
 
 // Runs before each test
 - (void)setUp {
-  self.timeout = 10; // Set timeout to 10 seconds for asynchronous tests (Default is 60 seconds)
 }
 
 // Runs before each test (async)
