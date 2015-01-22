@@ -83,6 +83,7 @@ extern NSString *NSStringFromGRTestStats(GRTestStats stats);
 
 @protocol GRTest;
 @protocol GRTestDelegate;
+@class GRTestCase;
 
 typedef void (^GRTestCompletionBlock)(id<GRTest> test);
 
@@ -228,7 +229,7 @@ typedef void (^GRTestCompletionBlock)(id<GRTest> test);
  */
 @interface GRTest : NSObject <GRTest, GRTestCaseLogWriter>
 
-@property (readonly) id target;
+@property (readonly) GRTestCase *testCase;
 @property (readonly) SEL selector;
 @property (nonatomic) NSTimeInterval interval;
 @property (nonatomic) GRTestStatus status;
@@ -246,10 +247,10 @@ typedef void (^GRTestCompletionBlock)(id<GRTest> test);
 - (id)initWithIdentifier:(NSString *)identifier name:(NSString *)name delegate:(id<GRTestDelegate>)delegate;
 
 /*!
- Create test with target/selector.
- @param target Target (usually a test case)
+ Create test with test case and selector.
+ @param testCase Test case
  @param selector Selector (usually a test method)
  */
-- (id)initWithTarget:(id)target selector:(SEL)selector delegate:(id<GRTestDelegate>)delegate;
+- (id)initWithTestCase:(GRTestCase *)testCase selector:(SEL)selector delegate:(id<GRTestDelegate>)delegate;
 
 @end

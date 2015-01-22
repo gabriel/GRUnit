@@ -80,10 +80,10 @@ BOOL isTestFixtureOfClass(Class aClass, Class testCaseClass);
 
 /*!
  Load tests from target.
- @param target Target
+ @param testCase Test case
  @result Array of id<GRTest>
  */
-- (NSArray *)loadTestsFromTarget:(id)target delegate:(id<GRTestDelegate>)delegate;
+- (NSArray *)loadTestsFromTestCase:(GRTestCase *)testCase delegate:(id<GRTestDelegate>)delegate;
 
 /*!
  See if class is of a registered test case class.
@@ -123,8 +123,6 @@ BOOL isTestFixtureOfClass(Class aClass, Class testCaseClass);
  @result Line number
  */
 + (NSInteger)exceptionLineNumberForTest:(id<GRTest>)test;
-
-+ (BOOL)runTestWithTarget:(id)target selector:(SEL)selector exception:(NSException **)exception interval:(NSTimeInterval *)interval;
 
 @end
 

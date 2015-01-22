@@ -96,33 +96,33 @@
 
 /*!
  Create test group from a test case.
- @param testCase Test case, could be a subclass of GRTestCase
+ @param testCase Test case
  @param delegate Delegate, notifies of test start and end
  @result New test group
  */
-- (id)initWithTestCase:(id)testCase delegate:(id<GRTestDelegate>)delegate;
+- (id)initWithTestCase:(GRTestCase *)testCase delegate:(id<GRTestDelegate>)delegate;
 
 /*!
  Create test group from a single test.
- @param testCase Test case, could be a subclass of GRTestCase
+ @param testCase Test case
  @param selector Test to run 
  @param delegate Delegate, notifies of test start and end
  */
-- (id)initWithTestCase:(id)testCase selector:(SEL)selector delegate:(id<GRTestDelegate>)delegate;
+- (id)initWithTestCase:(GRTestCase *)testCase selector:(SEL)selector delegate:(id<GRTestDelegate>)delegate;
 
 /*!
  Create test group from a test case.
- @param testCase Test case, could be a subclass of GRTestCase
+ @param testCase Test case
  @param delegate Delegate, notifies of test start and end
  @result New test group
  */
-+ (GRTestGroup *)testGroupFromTestCase:(id)testCase delegate:(id<GRTestDelegate>)delegate;
++ (GRTestGroup *)testGroupFromTestCase:(GRTestCase *)testCase delegate:(id<GRTestDelegate>)delegate;
 
 /*!
  Add a test case (or test group) to this test group.
  @param testCase Test case, could be a subclass of GRTestCase
  */
-- (void)addTestCase:(id)testCase;
+- (void)addTestCase:(GRTestCase *)testCase;
 
 /*!
  Add a test group to this test group.

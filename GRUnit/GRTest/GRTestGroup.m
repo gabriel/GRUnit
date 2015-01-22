@@ -49,7 +49,7 @@
   return self;
 }
 
-- (id)initWithTestCase:(id)testCase delegate:(id<GRTestDelegate>)delegate {
+- (id)initWithTestCase:(GRTestCase *)testCase delegate:(id<GRTestDelegate>)delegate {
   if ((self = [self initWithName:NSStringFromClass([testCase class]) delegate:delegate])) {
     _testCase = testCase;
     [self _addTestsFromTestCase:testCase];
@@ -57,15 +57,15 @@
   return self;
 }
 
-- (id)initWithTestCase:(id)testCase selector:(SEL)selector delegate:(id<GRTestDelegate>)delegate {
+- (id)initWithTestCase:(GRTestCase *)testCase selector:(SEL)selector delegate:(id<GRTestDelegate>)delegate {
   if ((self = [self initWithName:NSStringFromClass([testCase class]) delegate:delegate])) {
     _testCase = testCase;
-    [self addTest:[[GRTest alloc] initWithTarget:testCase selector:selector delegate:self]];
+    [self addTest:[[GRTest alloc] initWithTestCase:testCase selector:selector delegate:self]];
   }
   return self;
 }
 
-+ (GRTestGroup *)testGroupFromTestCase:(id)testCase delegate:(id<GRTestDelegate>)delegate {
++ (GRTestGroup *)testGroupFromTestCase:(GRTestCase *)testCase delegate:(id<GRTestDelegate>)delegate {
   return [[GRTestGroup alloc] initWithTestCase:testCase delegate:delegate];
 }
 
@@ -74,12 +74,12 @@
                  _name, (int)_status, _interval, @(_stats.succeedCount), @(_stats.testCount), @(_stats.failureCount)];
 }
 
-- (void)_addTestsFromTestCase:(id)testCase {
-  NSArray *tests = [[GRTesting sharedInstance] loadTestsFromTarget:testCase delegate:self];
+- (void)_addTestsFromTestCase:(GRTestCase *)testCase {
+  NSArray *tests = [[GRTesting sharedInstance] loadTestsFromTestCase:testCase delegate:self];
   [self addTests:tests];
 }
 
-- (void)addTestCase:(id)testCase {
+- (void)addTestCase:(GRTestCase *)testCase {
   GRTestGroup *testCaseGroup = [[GRTestGroup alloc] initWithTestCase:testCase delegate:self];
   [self addTestGroup:testCaseGroup];
 }

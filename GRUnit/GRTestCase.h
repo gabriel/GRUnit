@@ -67,7 +67,21 @@
  */
 #define GRWeakSelf GRWeakObject(self)
 
-#define GRErrorHandler (^(NSError *error) { GRFail(@"Error: %@", error); })
+#define GRErrorHandler (^(NSError *error) { if (error) GRFail(@"Error: %@", error); })
+
+@protocol GRTestCase
+//! Run before each test method
+- (void)setUp;
+
+//! Set up async
+- (void)setUp:(dispatch_block_t)completion;
+
+//! Run after each test method
+- (void)tearDown;
+
+//! Tear down async
+- (void)tearDown:(dispatch_block_t)completion;
+@end
 
 /*!
  The base class for a test case. 
@@ -99,19 +113,7 @@
 @property (weak) id<GRTestCaseLogWriter> logWriter;
 @property (readonly, getter=isCancelling) BOOL cancelling;
 
-@property id<GRTest> test;
-
-
-//! Run before each test method
-- (void)setUp;
-
-//! Set up async
-- (void)setUp:(dispatch_block_t)completion;
-
-//! Run after each test method
-- (void)tearDown;
-
-- (void)tearDown:(dispatch_block_t)completion;
+@property id<GRTest> currentTest;
 
 /*!
  Log a message, which notifies the log delegate.
@@ -144,5 +146,10 @@
  Cycle run loop.
  */
 - (void)wait:(NSTimeInterval)timeout;
+
+/*!
+ For the test runner.
+ */
+- (void)tearDownForTestCase;
 
 @end

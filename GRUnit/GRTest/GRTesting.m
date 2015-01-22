@@ -91,11 +91,6 @@ BOOL isTestFixtureOfClass(Class aClass, Class testCaseClass) {
 }
 // GTM_END
 
-@protocol GRTesting
-- (void)_setUp;
-- (void)_tearDown;
-@end
-
 @implementation GRTesting
 
 static GRTesting *gSharedInstance;
@@ -183,11 +178,11 @@ static GRTesting *gSharedInstance;
 
 // GTM_BEGIN
 
-- (NSArray *)loadTestsFromTarget:(id)target delegate:(id<GRTestDelegate>)delegate {
+- (NSArray *)loadTestsFromTestCase:(GRTestCase *)testCase delegate:(id<GRTestDelegate>)delegate {
   NSMutableArray *invocations = nil;
   // Need to walk all the way up the parent classes collecting methods (in case
   // a test is a subclass of another test).
-  for (Class currentClass = [target class];
+  for (Class currentClass = [testCase class];
        currentClass && (currentClass != [NSObject class]);
        currentClass = class_getSuperclass(currentClass)) {
     unsigned int methodCount;
@@ -227,7 +222,7 @@ static GRTesting *gSharedInstance;
             && strcmp(returnType, @encode(void)) == 0
             //&& method_getNumberOfArguments(currMethod) == 2) {
             ) {
-          NSMethodSignature *sig = [[target class] instanceMethodSignatureForSelector:sel];
+          NSMethodSignature *sig = [testCase.class instanceMethodSignatureForSelector:sel];
           NSInvocation *invocation
           = [NSInvocation invocationWithMethodSignature:sig];
           [invocation setSelector:sel];
@@ -242,111 +237,10 @@ static GRTesting *gSharedInstance;
   
   NSMutableArray *tests = [[NSMutableArray alloc] initWithCapacity:[invocations count]];
   for (NSInvocation *invocation in invocations) {
-    GRTest *test = [[GRTest alloc] initWithTarget:target selector:invocation.selector delegate:delegate];
+    GRTest *test = [[GRTest alloc] initWithTestCase:testCase selector:invocation.selector delegate:delegate];
     [tests addObject:test];
   }
   return tests;
-}
-
-
-+ (void)runTestWithTarget:(id)target selector:(SEL)selector completion:(void (^)(NSException *exception, NSTimeInterval interval))completion {  
-  @try {
-    // Private setUp internal to GRUnit (in case subclasses fail to call super)
-    if ([target respondsToSelector:@selector(_setUp)]) {
-      [target performSelector:@selector(_setUp)];
-    }
-    
-    if ([target respondsToSelector:@selector(setUp)]) {
-      [target performSelector:@selector(setUp)];
-    }
-  } @catch(NSException *e) {
-    completion(e, 0);
-    return;
-  }
-  
-  NSDate *startDate = [NSDate date];
-  
-  @try {
-
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-
-    [target performSelector:selector withObject:^() {
-      NSException *exception = nil;
-      @try {
-        if ([target respondsToSelector:@selector(tearDown)]) {
-          [target performSelector:@selector(tearDown)];
-        }
-        
-        // Private tearDown internal to GRUnit (in case subclasses fail to call super)
-        if ([target respondsToSelector:@selector(_tearDown)]) {
-          [target performSelector:@selector(_tearDown)];
-        }
-      } @catch(NSException *tearDownException) {
-        exception = tearDownException;
-      }
-      
-      completion(exception, [[NSDate date] timeIntervalSinceDate:startDate]);
-    }];
-  
-#pragma clang diagnostic pop
-    
-  } @catch(NSException *e) {
-    completion(e, [[NSDate date] timeIntervalSinceDate:startDate]);
-  }
-}
-
-+ (BOOL)runTestWithTarget:(id)target selector:(SEL)selector exception:(NSException **)exception interval:(NSTimeInterval *)interval {
-  
-  NSDate *startDate = [NSDate date];  
-  NSException *testException = nil;
-
-  @try {
-    // Wrap things in autorelease pools because they may
-    // have an STMacro in their dealloc which may get called
-    // when the pool is cleaned up
-    @autoreleasepool {
-    // We don't log exceptions here, instead we let the person that called
-    // this log the exception.  This ensures they are only logged once but the
-    // outer layers get the exceptions to report counts, etc.
-      @try {
-        // Private setUp internal to GRUnit (in case subclasses fail to call super)
-        if ([target respondsToSelector:@selector(_setUp)])
-          [target performSelector:@selector(_setUp)];
-
-        if ([target respondsToSelector:@selector(setUp)])
-          [target performSelector:@selector(setUp)];
-        @try {
-          // Runs the test
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-          [target performSelector:selector];
-#pragma clang diagnostic pop
-          
-        } @catch (NSException *exception) {
-          if (!testException) testException = exception;
-        }
-
-        if ([target respondsToSelector:@selector(tearDown)])
-          [target performSelector:@selector(tearDown)];
-        
-        // Private tearDown internal to GRUnit (in case subclasses fail to call super)
-        if ([target respondsToSelector:@selector(_tearDown)])
-          [target performSelector:@selector(_tearDown)];
-
-      } @catch (NSException *exception) {
-        if (!testException) testException = exception;
-      }
-    }
-  } @catch (NSException *exception) {
-    if (!testException) testException = exception; 
-  }  
-
-  if (interval) *interval = [[NSDate date] timeIntervalSinceDate:startDate];
-  if (exception) *exception = testException;
-  BOOL passed = (!testException);
-  
-  return passed;
 }
 
 // GTM_END

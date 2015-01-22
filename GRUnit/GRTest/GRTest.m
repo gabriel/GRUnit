@@ -68,7 +68,8 @@ BOOL GRTestStatusIsRunning(GRTestStatus status) {
 BOOL GRTestStatusEnded(GRTestStatus status) {
   return (status == GRTestStatusSucceeded 
           || status == GRTestStatusErrored
-          || status == GRTestStatusCancelled);
+          || status == GRTestStatusCancelled
+          || status == GRTestStatusNone);
 }
 
 @interface GRTest ()
@@ -95,11 +96,11 @@ BOOL GRTestStatusEnded(GRTestStatus status) {
   return self;
 }
 
-- (id)initWithTarget:(id)target selector:(SEL)selector delegate:(id<GRTestDelegate>)delegate {
+- (id)initWithTestCase:(GRTestCase *)testCase selector:(SEL)selector delegate:(id<GRTestDelegate>)delegate {
   NSString *name = NSStringFromSelector(selector);
-  NSString *identifier = [NSString stringWithFormat:@"%@/%@", NSStringFromClass([target class]), name];
+  NSString *identifier = [NSString stringWithFormat:@"%@/%@", NSStringFromClass(testCase.class), name];
   if ((self = [self initWithIdentifier:identifier name:name delegate:delegate])) {
-    _target = target;
+    _testCase = testCase;
     _selector = selector;
   }
   return self;  
@@ -140,9 +141,7 @@ BOOL GRTestStatusEnded(GRTestStatus status) {
   } else {
     _status = GRTestStatusCancelled;
   }
-  if ([_target respondsToSelector:@selector(cancel)]) {
-    [_target cancel];
-  }
+  [_testCase cancel];
   [_delegate testDidUpdate:self source:self];
 }
 
@@ -186,9 +185,7 @@ BOOL GRTestStatusEnded(GRTestStatus status) {
   
   completion(self);
   
-  if ([_target respondsToSelector:@selector(setTest:)]) {
-    [_target setTest:nil];
-  }
+  [_testCase setCurrentTest:nil];
 }
 
 - (void)run:(dispatch_queue_t)queue completion:(GRTestCompletionBlock)completion {
@@ -205,9 +202,7 @@ BOOL GRTestStatusEnded(GRTestStatus status) {
 
   _exception = nil;
   
-  if ([_target respondsToSelector:@selector(setTest:)]) {
-    [_target setTest:self];
-  }
+  [_testCase setCurrentTest:self];
   
   [self runTest:^(NSException *exception, NSTimeInterval interval) {
     [self _didRunWithInterval:interval exception:exception completion:completion];
@@ -216,17 +211,12 @@ BOOL GRTestStatusEnded(GRTestStatus status) {
 
 - (void)_setUp:(dispatch_block_t)afterSetup completion:(void (^)(NSException *exception, NSTimeInterval interval))completion {
   @try {
-    // Private setUp internal to GRUnit (in case subclasses fail to call super)
-    if ([_target respondsToSelector:@selector(_setUp)]) {
-      [_target _setUp];
+    if ([_testCase respondsToSelector:@selector(setUp)]) {
+      [(id)_testCase setUp];
     }
-    
-    if ([_target respondsToSelector:@selector(setUp)]) {
-      [_target setUp];
-    }
-    
-    if ([_target respondsToSelector:@selector(setUp:)]) {
-      [_target setUp:afterSetup];
+
+    if ([_testCase respondsToSelector:@selector(setUp:)]) {
+      [(id)_testCase setUp:afterSetup];
     } else {
       afterSetup();
     }
@@ -238,17 +228,14 @@ BOOL GRTestStatusEnded(GRTestStatus status) {
 
 - (void)_tearDown:(void (^)(NSException *exception))completion {
   @try {
-    if ([_target respondsToSelector:@selector(tearDown)]) {
-      [_target performSelector:@selector(tearDown)];
+    [_testCase tearDownForTestCase];
+    
+    if ([_testCase respondsToSelector:@selector(tearDown)]) {
+      [(id)_testCase tearDown];
     }
     
-    // Private tearDown internal to GRUnit (in case subclasses fail to call super)
-    if ([_target respondsToSelector:@selector(_tearDown)]) {
-      [_target performSelector:@selector(_tearDown)];
-    }
-    
-    if ([_target respondsToSelector:@selector(tearDown:)]) {
-      [_target tearDown:^{
+    if ([_testCase respondsToSelector:@selector(tearDown:)]) {
+      [(id)_testCase tearDown:^{
         completion(nil);
       }];
     } else {
@@ -274,15 +261,15 @@ BOOL GRTestStatusEnded(GRTestStatus status) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
     
-    NSMethodSignature *signature = [_target methodSignatureForSelector:_selector];
+    NSMethodSignature *signature = [_testCase methodSignatureForSelector:_selector];
     if ([signature numberOfArguments] == 2) {
-      [_target performSelector:_selector];
+      [_testCase performSelector:_selector];
       [self _tearDown:^(NSException *e) {
         completion(e, [[NSDate date] timeIntervalSinceDate:startDate]);
       }];
     } else {
       // Run target with completion block (asynchronous)
-      [_target performSelector:_selector withObject:^() {
+      [_testCase performSelector:_selector withObject:^() {
         [self _tearDown:^(NSException *e) {
           completion(e, [[NSDate date] timeIntervalSinceDate:startDate]);
         }];
@@ -304,8 +291,7 @@ BOOL GRTestStatusEnded(GRTestStatus status) {
 #pragma mark Log Writer
 
 - (void)_setLogWriter:(id<GRTestCaseLogWriter>)logWriter {
-  if ([_target respondsToSelector:@selector(setLogWriter:)])
-    [_target setLogWriter:logWriter];
+  [_testCase setLogWriter:logWriter];
 } 
 
 #pragma mark NSCoding
@@ -328,8 +314,8 @@ BOOL GRTestStatusEnded(GRTestStatus status) {
 #pragma mark NSCopying
 
 - (id)copyWithZone:(NSZone *)zone {
-  if (!_target) [NSException raise:NSObjectNotAvailableException format:@"NSCopying unsupported for tests without target/selector pair"];
-  return [[GRTest allocWithZone:zone] initWithTarget:_target selector:_selector delegate:_delegate];
+  if (!_testCase) [NSException raise:NSObjectNotAvailableException format:@"NSCopying unsupported for tests without target/selector pair"];
+  return [[GRTest allocWithZone:zone] initWithTestCase:_testCase selector:_selector delegate:_delegate];
 }
 
 @end

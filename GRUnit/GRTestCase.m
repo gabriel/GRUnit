@@ -36,19 +36,7 @@
   return NO;
 }
 
-- (void)setUp { }
-
-- (void)tearDown { }
-
-- (void)setUp:(dispatch_block_t)completion {
-  completion();
-}
-
-- (void)tearDown:(dispatch_block_t)completion {
-  completion();
-}
-
-- (void)_tearDown {
+- (void)tearDownForTestCase {
   _cancelling = NO;
 }
 
@@ -75,7 +63,7 @@
   BOOL timedOut = NO;
   NSUInteger runIndex = 0;
   
-  while (!GRTestStatusEnded(_test.status)) {
+  while (!GRTestStatusEnded(_currentTest.status)) {
     NSString *mode = runLoopModes[runIndex++ % runLoopModes.count];
     
     @autoreleasepool {
