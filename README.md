@@ -68,6 +68,7 @@ $ grunit add -n ProjectName -f SampleTest
 
 or read the `GRTestCase` example below.
 
+<!--- This appears unsafe
 ### Sync all files references in main target to test target:
 
 If you want to link all the files in your main target to the test target in your project file, run this sync command.
@@ -75,6 +76,7 @@ If you want to link all the files in your main target to the test target in your
 ```xml
 $ grunit sync -n ProjectName
 ```
+-->
 
 ## GRTestCase
 
