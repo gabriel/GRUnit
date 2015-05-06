@@ -7,11 +7,6 @@ GRUnit is a test framework for iOS and OSX which runs as a Test (app) target in 
 ![GRUnit-1.0.1a](https://raw.githubusercontent.com/gabriel/GRUnit/master/GRUnit-1.0.1a.png)
 ![GRUnit-1.0.1b](https://raw.githubusercontent.com/gabriel/GRUnit/master/GRUnit-1.0.1b.png)
 
-Projects using GRUnit:
-
-* [NAChloride](https://github.com/gabriel/NAChloride)
-* [MPMessagePack](https://github.com/gabriel/MPMessagePack)
-* [TSTripleSec](https://github.com/gabriel/TSTripleSec)
 
 ## Install
 
